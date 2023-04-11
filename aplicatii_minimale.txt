@@ -1,0 +1,284 @@
+/* Lab4_Popa_Larisa-Ancuta_prob_1
+
+-media aritmetica a trei numere neintregi
+
+program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+double cit_nr(void); //citire numere intregi
+double media_aritm(double x, double y, double z); //calculul mediei aritmetice
+
+int main()
+{
+	double a, b, c, med;
+
+	printf("Introduceti trei numere neintregi\n");
+	a = cit_nr();
+	b = cit_nr();
+	c = cit_nr();
+
+	med = media_aritm(a, b, c);
+
+	printf("\nMedia aritmetica a celor trei numere este: %lf  \n", med);
+
+	return 0;
+}
+
+double cit_nr(void)
+{
+	double x;
+	printf("Introduceti o valoare: ");
+	scanf("%lf", &x);
+	return x;
+}
+
+double media_aritm(double x, double y, double z)
+{
+	return (double)((x + y + z) / 3);
+}
+
+------------------------------
+
+/* lab4_Popa_Larisa-Ancuta_prob_2
+
+-media geometrica a doua numere intregi
+
+program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+#include<math.h>
+
+int cit_nr(void); //citire numere intregi
+double med_g(int x, int y); //calculul mediei geometrice
+
+int main()
+{
+	int a, b;
+
+	printf("Introduceti doua numere intregi\n");
+	a = cit_nr();
+	b = cit_nr();
+
+	double medg = med_g(a, b);
+
+	printf("\nMedia geometrica a celor doua numere este: %lf \n", medg);
+
+	return 0;
+}
+
+int cit_nr(void)
+{
+	int x;
+	printf("Introduceti o valoare: ");
+	scanf("%d", &x);
+	return x;
+}
+
+double med_g(int x, int y)
+{
+	return (double)sqrt(x*y);
+}
+
+------------------------------
+
+/* lab4_Popa_Larisa-Ancuta_prob_3
+
+-defineste o variabila întreaga care va fi initializata cu valori constante
+-afisati rezultatul cu ajutorul supraîncarcarii operatorului << si a lui cout
+
+program C++
+*/
+
+#include<iostream>
+using namespace std;
+
+class afisare
+{
+public:
+	void print(const int x)
+	{
+		cout << "Variabila este: " << x << endl;
+	}
+}; //supraincarcarea operatorilor << , cout
+
+int main(void)
+{
+	int var;
+	cout << "Introduceti o variabila: ";
+	cin >> var;
+
+	afisare af;
+	af.print(var);
+
+	return 0;
+}
+
+------------------------------
+
+/* lab4_Popa_Larisa-Ancuta_prob_4
+
+-definiti un sir de caractere care va fi afisat cu cout
+-definiti alte siruri de caractere folosind secvente escape
+-verificati utilizarea spatiilor albe
+
+program C++
+*/
+
+#include<iostream>
+#include<string.h>
+
+using namespace std;
+
+int main()
+{
+	char sir[] = "Acesta este un sir de caractere.";
+	cout << sir << endl;
+
+	cout << "\aAcesta este un sir de caractere.";//alerta
+	cout << "\n Acesta este \n un sir de caractere.\n";//rand nou
+	cout << "Acesta este un \"sir de caractere\"." << endl; //ghilimele
+	cout << "Acesta este un \'sir de caractere\'." << endl; //apostrof
+
+	//verificare utilizare spatii albe 
+	if (strchr(sir, ' '))
+		cout << "Sirul contine spatii albe.\n";
+	else
+		cout << "Sirul nu contine spatii albe.\n";
+
+	return 0;
+}
+
+------------------------------
+
+/* lab4__Popa_Larisa-Ancuta_prob_5
+
+-suma ponderata a trei numere intregi (suma ponderilor=1)
+
+program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+
+int cit_int(void); //citire numere intregi
+float cit_ponderi(void); //citire ponderi (subunitare)
+
+int main()
+{
+	int a, b, c;
+	printf("Introduceti 3 numere intregi: \n");
+	a = cit_int();
+	b = cit_int();
+	c = cit_int();
+
+	float p1, p2, p3,suma;
+	printf("\nIntroduceti ponderile numerelor (suma=1): \n");
+	p1 = cit_ponderi();
+	p2 = cit_ponderi();
+	p3 = cit_ponderi();
+
+	if (p1 + p2 + p3 == 1) // verifica daca suma ponderilor este 1
+	{
+		suma = a*p1 + b*p2 + c*p3;
+		printf("\nSuma ponderata a celor trei numere este: %f \n", suma);
+	}
+	else
+		printf("\nSuma ponderilor trebuie sa fie egala cu 1! \n");
+}
+
+int cit_int(void)
+{
+	int x;
+	printf("Introduceti o valoare: ");
+	scanf("%d", &x);
+	return x;
+}
+
+float cit_ponderi(void)
+{
+	float x;
+	printf("Introduceti o valoare: ");
+	scanf("%f", &x);
+	return x;
+}
+
+------------------------------
+
+/* lab4_Popa_Larisa-Ancuta_prob_6
+
+-defini?i într-un program constante simbolice de tipuri diferite (întregi, reale, ?iruri de caractere)
+-afi?ati valorile acestor constante utilizând operatorul << ?i fluxul cout
+
+program C++
+*/
+
+#include<iostream>
+using namespace std;
+
+int main()
+{
+	int i = 5;
+	float f = 5.34;
+	double d = 6.23545;
+	char c[] = "sir";
+
+	cout << i << endl << f << endl << d << endl << c << endl;
+
+	return 0;
+}
+
+------------------------------
+
+/*lab4_Popa_Larisa-Ancuta_prob_7 
+-a,b,c numere reale
+-afi?a?i rezultatul opera?iei 1/a+1/b+1/c
+-efectuati aceiasi operatie (numere intregi)
+program C
+*/
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+float cit_nr_real(void); //citire nr. reale
+int cit_nr_intreg(void); //citire nr. intregi
+
+int main()
+{
+	//operatia cu numere reale
+	float a, b, c;
+	printf("Introduceti trei numere reale\n");
+	a = cit_nr_real();
+	b = cit_nr_real();
+	c = cit_nr_real();
+
+	float rez_real = 1 / a + 1 / b + 1 / c;
+	printf("Rezultatul operatiei cu numere reale este: %f \n\n", rez_real);
+
+	//operatia cu numere intregi
+	int d, e, f;
+	printf("Introduceti trei numere intregi\n");
+	d = cit_nr_intreg();
+	e = cit_nr_intreg();
+	f = cit_nr_intreg();
+
+	float rez_intreg = (float)1 / d + (float)1 / e + (float)1 / f;
+	printf("Rezultatul operatiei cu numere intregi este: %f \n", rez_intreg);
+}
+
+float cit_nr_real(void)
+{
+	float x;
+	printf("Introduceti o valoare reala: ");
+	scanf("%f", &x);
+	return x;
+}
+
+int cit_nr_intreg(void)
+{
+	int x;
+	printf("Introduceti o valoare intreaga: ");
+	scanf("%d", &x);
+	return x;
+}

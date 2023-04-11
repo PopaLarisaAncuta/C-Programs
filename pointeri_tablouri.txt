@@ -1,0 +1,1016 @@
+/* Lab10_Popa_Larisa-Ancuta_Prob_1
+
+-sa se rezolve 3 probleme din lab. 8 folosind accesul la elementele tabloului prin pointeri
+
+-sa se determine valoarea medie a elementelor pozitive dintr-un tablou unidimensional (prob1)
+-sa se determine cel mai mic element pozitiv dintr-un tablou unidimensional (prob2)
+-sa se afiseze tabloul ordonat crescator (prob3)
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define DIM 100
+
+void citire(int, int[]); //citeste un tablou unidimensional
+void val_med_poz(int, int*, float*);//determina valoarea medie a elementelor pozitive
+void min_poz(int, int*, int*); //determina cel mai mic element pozitiv al tabloului
+void ordonare(int, int*); //ordoneaza crescator elementele sirului
+
+
+int main()
+{
+	int n, a[DIM], min;
+    float medie;
+
+	printf("Introduceti dimensiunea tabloului: ");
+	scanf("%d", &n);
+
+	citire(n, a);
+
+	val_med_poz(n, a, &medie);
+	printf("\nValoarea medie a elementelor pozitive este: %0.2f\n", medie);
+
+	min_poz(n, a, &min);
+	printf("\nCel mai mic element pozitiv este: %d \n\n", min);
+
+	ordonare(n, a);
+
+	return 0;
+}
+
+void citire(int n, int a[DIM])
+{
+	printf("\nIntroduceti elementele tabloului:\n ");
+	int i;
+	for (i = 0;i < n;i++)
+		scanf("%d", &a[i]);
+}
+
+void val_med_poz(int n, int *a, float *medie)
+{
+	int i;
+	float suma = 0, nr = 0;
+
+	for (i = 0;i < n;i++)
+	{
+		if (*(a+i) > 0)
+		{
+			suma += *(a+i);
+			nr++;
+		}
+	}
+
+	*medie = suma / nr;
+}
+
+void min_poz(int n, int *a, int *min)
+{
+	int i;
+	float minim;
+	for (i = 0;i < n;i++)
+	{
+		if (*(a+i) > 0)
+		{
+			minim = *(a + i);
+			break;
+		}
+	} //primul element pozitiv gasit devine minim
+
+	for (i = 0;i < n;i++)
+	{
+		if (*(a + i) < minim && *(a + i) > 0)
+			minim = *(a + i);
+	} //cauta cea mai mica valoare pozitiva 
+
+	*min = minim;
+}
+
+void ordonare(int n, int *a)
+{
+	int i, j, aux;
+	for (i = 0;i < n;i++)
+	{
+		for (j = 0;j < n;j++)
+		{
+			if (*(a + i) < *(a + j))
+			{
+				aux = *(a + i);
+				*(a + i) = *(a + j);
+				*(a + j) = aux;
+			}
+		}
+	}
+
+	printf("Elementele ordonate crscator:\n ");
+	for (i = 0;i < n;i++)
+		printf("%d  ", *(a + i));
+	printf("\n\n");
+}
+
+------------------------------
+
+/* Lab10_Popa_Larisa-Ancuta_Prob_2
+
+-se considera doi parametri întregi si alti doi flotanti din linia de comanda
+-sa se afiseze suma si produsul lor
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char *argv[])
+{
+	int suma_i = 0, prod_i = 1;
+	float suma_f = 0, prod_f = 1;
+
+	if (argc == 1)
+	{
+		printf("Nu ati introdus valorile corespunzatoare!\n");
+		exit(1);
+	}
+
+	suma_i = atoi(argv[1]) + atoi(argv[2]);
+	prod_i = atoi(argv[1])*atoi(argv[2]);
+	suma_f = atof(argv[3]) + atof(argv[4]);
+	prod_f = atof(argv[3])*atof(argv[4]);
+
+	printf("Suma(intregi): %d\n", suma_i);
+	printf("Produs(intregi): %d\n", prod_i);
+	printf("\nSuma(flotanti): %0.2f\n", suma_f);
+	printf("Produs(flotanti): %0.2f\n\n", prod_f);
+
+	return 0;
+}
+
+------------------------------
+
+/* Lab10_Popa_Larisa-Ancuta_Prob_3
+
+-se citeste de la tastatura un sir de caractere cu lungimea mai mare decât 7
+-se foloseste un pointer pt. a accesa si afisa caracterele de pe pozitiile 1, 3, 5 si 7
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+
+#define DIM 100
+#define MIN_DIM 7
+
+bool verificare(char[]); //verificare dimensiune sir
+void afisare(char*);
+
+int main()
+{
+	char c[DIM];
+	printf("Introdueti un sir de caractere: ");
+	scanf("%s", &c);
+
+	if (verificare(c))
+		afisare(c);
+	else
+		printf("Introduceti un sir cu minim 7 caractere!\n\n");
+
+	return 0;
+}
+
+bool verificare(char c[DIM])
+{
+	if (strlen(c) >= MIN_DIM)
+		return true;
+	return false;
+}
+
+void afisare(char *c)
+{
+	printf("\nCaracterul de pe pozitia 1: %c \n", *(c));
+	printf("\nCaracterul de pe pozitia 3: %c \n", *(c + 2));
+	printf("\nCaracterul de pe pozitia 5: %c \n", *(c + 4));
+	printf("\nCaracterul de pe pozitia 7: %c \n\n", *(c + 6));
+}
+
+------------------------------
+
+/* Lab10_Popa_Larisa-Ancuta_Prob_4
+
+-se citesc elementele a 2 matrici de valori întregi
+-sa se scrie o functie care primeste ca parametri pointerii la cele 2 matrici si returneaza un pointer la matricea suma
+-rezultatul însumarii matricelor va fi afisat în functia main
+-afisati elementele de pe diagoanala secundara a matricii suma, folosind acelasi pointer
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define DIM 100
+
+void citire(int n, int m, int*); //citeste elementele matricei
+void afisare(int n, int m, int*); //afiseaza matricea
+void suma(int n, int m, int*, int*, int*); //face suma celor doua matrice
+void diagonala(int n, int m, int*); //afiseaza elementele de pe diagonala secundara
+
+int main()
+{
+	int n1, n2, m1, m2, a[DIM][DIM], b[DIM][DIM], s[DIM][DIM] = { 0 }, *p1, *p2, *ps;
+
+	p1 = &a[0][0];
+	p2 = &b[0][0];
+	ps = &s[0][0];
+
+	printf("Matrice 1");
+	printf("\nLinii: ");
+	scanf("%d", &n1);
+	printf("Coloane: ");
+	scanf("%d", &m1);
+	citire(n1, m1, p1);
+	printf("\n\nMarice 2");
+	printf("\nLinii: ");
+	scanf("%d", &n2);
+	printf("Coloane: ");
+	scanf("%d", &m2);
+	citire(n2,m2, p2);
+
+	if (n1 == n2 && m1 == m2)
+	{
+		suma(n1, m1, ps, p1, p2);
+		printf("\nMatricea suma: \n");
+		afisare(n1, m1, ps);
+
+		if (n1 == m1)
+			diagonala(n1, m1, ps);
+		else
+			printf("\nMatricea nu este patratica!\n\n");
+	}
+	else printf("\nMatricile nu se pot aduna!\n\n");
+
+	return 0;
+}
+
+void citire(int n,int m,int *x)
+{
+	int i, j;
+
+	printf("Introduceti elementele matricei: \n");
+	for (i = 0;i<n;i++)
+		for (j = 0;j<m;j++)
+		{
+			printf("m[%d][%d]: ", i, j);
+			scanf("%d", x + i*m + j);
+		}
+}
+
+void afisare(int n, int m, int *s)
+{
+	int i, j;
+
+	for (i = 0;i < n;i++)
+	{
+		for (j = 0;j < m;j++)
+			printf("%6d", (*(s + i*m + j)));
+		printf("\n");
+	}
+}
+
+
+void suma(int n, int m, int *ps, int *p1, int *p2)
+{
+	int i, j;
+
+	for (i = 0;i<n;i++)
+		for (j = 0;j<m;j++)
+			*(ps + i*m + j) = *(p1 + i*m + j) + *(p2 + i*m + j);
+}
+
+void diagonala(int n, int m, int *ps)
+{
+	int i;
+
+	printf("\nElementele de pe diagonala secundara a matricii suma sunt : \n");
+	for (i = 0;i<n;i++)
+		printf("%4d", *(ps + i*n + (n - i - 1)));
+	printf("\n\n");
+}
+
+------------------------------
+
+/* Lab10_Popa_Larisa-Ancuta_Prob_5
+
+Definiti un tablou de pointeri catre siruri de caractere
+Fiecare locatie a tabloului contine adrese catre unul din urmatoarele siruri de caractere:
+- "valoare prea mica"
+- "valoare prea mare"
+- "valoare corecta"
+Aplicatia genereaza un numar aleator între 1 si 100 
+citeste în mod repetat intrarea de la tastatura pâna când utilizatorul introduce valoarea corecta
+Folositi mesajele definite pentru a informa utilizatorul, la fiecare pas, 
+despre relatia existenta între numarul generat si ultima valoare citita.
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define MIN 1
+#define MAX 100
+
+int main()
+{
+	 char *sir[] = { "valoare prea mica","valoare prea mare","valoare corecta" };
+	 int nr, val;
+
+	 srand(time(NULL));
+	 nr = rand() % MAX + MIN;
+
+	 do
+	 {
+		 printf("Introduceti un numar intreg: ");
+		 scanf("%d", &val);
+
+		 if (val > nr)
+			 printf("%s\n\n", *(sir + 1));
+		 else
+			 if (val < nr)
+				 printf("%s\n\n", *(sir));
+
+	 } while (val != nr);
+
+	 printf("%s\n\n", *(sir + 2));
+
+	 return 0;
+}
+
+------------------------------
+
+/* Lab10_Popa_Larisa-Ancuta_Prob_6
+
+-definiti un tablou de pointeri spre siruri de caractere, pe care sa-l initializati cu diferite mesaje
+-afisati mesajele
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void main()
+{
+	char *sir[] = { "coduri","universitatea tehnica","limbaje de programare","pointeri" };
+
+	printf("%s\n", *(sir));
+	printf("%s\n", *(sir+1));
+	printf("%s\n", *(sir+2));
+	printf("%s\n", *(sir+3));
+}
+
+------------------------------
+
+/* Lab10_Popa_Larisa-Ancuta_Prob_7
+
+-preia din linia de comanda siruri de caractere
+-afiseaza sirul rezultat din concatenarea acestora
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+
+#define DIM 200
+
+void main(int argc, char *argv[])
+{
+	char sir[DIM] = "";
+	int i;
+
+	if (argc == 1)
+	{
+		printf("\nIntroduceti siruri de caractere!\n\n");
+		return;
+	}
+
+	for (int i = 1;i<argc;i++)
+	{
+		strcat(sir, argv[i]);
+	}
+
+	printf("\nSirul rezultat: %s\n\n", sir);
+
+}
+
+------------------------------
+
+/* Lab10_Popa_Larisa-Ancuta_Prob_8
+
+-sa se scrie un program care inverseaza sirul de caractere citit din linia de comanda
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+
+#define DIM 100
+
+void main(int argc, char **argv)
+{
+	char sir[DIM];
+	int n, i;
+
+	if (argc != 2)
+	{
+		printf("\nIntroduceti un sigurn sir de carcatere.\n");
+		return;
+	}
+
+	n = strlen(*(argv + 1));
+
+	for (i = n - 1;i >= 0;i--)
+		sir[n - i - 1] = *(*(argv + 1) + i);
+
+	sir[n] = '\0';
+
+	printf("\nSirul inversat: %s\n\n", sir);
+}
+
+------------------------------
+
+/* Lab10_Popa_Larisa-Ancuta_Prob_9
+
+-citeste de la tastatura elemente ce reprezinta mediile unei grupe de studenti(float)
+-sa se scrie o functie care determina numarul studentilor cu media >= 8
+-afisati rezultatul în main (lucrati cu pointeri, fara variabile globale)
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define DIM 100
+
+void cit_med(int, float*); //citeste medii studenti
+int nr_8(int, float*); //determina si returneaza numarul de studenti cu media mai mare decat 8
+
+int main()
+{
+	float med[DIM];
+	int n;
+	printf("Introduceti numarul de studenti: ");
+	scanf("%d", &n);
+	cit_med(n, med);
+
+	if (nr_8(n, med) != 0)
+		printf("\nExista %d studenti cu media mai mare decat 8.\n\n", nr_8(n, med));
+	else
+		printf("\nNu exista studenti cu media mai mare decat 8!\n\n");
+
+	return 0;
+}
+
+void cit_med(int n, float *med)
+{
+	for (int i = 0;i<n;i++)
+	{
+		printf("Studentul %d: ", i );
+		scanf("%f", med + i);
+
+		if ((*(med + i) < 1 || (*(med + i) > 10)))
+		{
+			printf("\nDatele introduse sunt incorecte!\n\n");
+			break;
+		}
+	}
+}
+
+int nr_8(int n, float *med)
+{
+
+	int i, nr = 0;
+	for (int i = 0;i<n;i++)
+	{
+		if (*(med + i) >= 8)
+			nr++;
+	}
+
+	return nr;
+}
+
+------------------------------
+
+/* Lab10_Popa_Larisa-Ancuta_Prob_10
+
+-se citesc de la tastatura elementele de tip întreg ale unui tablou unidimensional a, utilizând o functie
+-se scrie o functie care completeaza un alt tablou unidimensional b
+     fiecare element al acestuia fiind obtinut prin scaderea mediei aritmetice a elementelor din a din elementul corespunzator din a
+-se scrie o functie care permite afisarea unui tablou unidimensional
+-afisati tablourile unidimensionale a si b. (utilizând pointeri, fara variabile globale).
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define DIM 100
+
+void citire(int, int*); //citeste elementele tabloului
+void completare(int, int*, float*); //completare tablou 2
+float medie(int, int*); //media elementelor tabloului
+void af_int(int, int*); //afisare elemente tablou intregi
+void af_fl(int, float*); //afisare elemente tablou flotanti
+
+
+int main()
+{
+	int n, a[DIM], *pa = &a[0];
+	float b[DIM], *pb = &b[0];
+
+	printf("Introduceti dimensiunea taboului: ");
+	scanf("%d", &n);
+	citire(n, a);
+
+	completare(n, pa, pb);
+
+	af_int(n, a);
+	af_fl(n, b);
+
+	return 0;
+}
+
+void citire(int n, int *a)
+{
+	int i;
+	printf("\nIntroduceti elementele tabloului: \n");
+	for (i = 0;i<n;i++)
+	{
+		printf("a[%d]=", i);
+		scanf("%d", a + i);
+	}
+}
+
+float medie(int n,int *pa)
+{
+	int i;
+	float s = 0;
+
+	for (i = 0;i < n;i++)
+		s += (float)(*(pa + i));
+
+	return (float)(s / n);
+}
+
+void completare(int n, int *pa, float *pb)
+{
+	int i;
+
+	for (i = 0;i < n;i++)
+		*(pb + i) = (float)(*(pa + i)) - medie(n, pa);
+}
+
+void af_int(int n,int *pa)
+{
+	int i;
+
+	printf("\nTablou a \n");
+	for (i = 0;i<n;i++)
+		printf("%4d", *(pa + i));
+
+	printf("\n");
+}
+
+void af_fl(int n, float *pb)
+{
+	int i;
+	printf("\nTablou b\n");
+	for (i = 0;i<n;i++)
+		printf(" %4.2f  ", *(pb + i));
+
+	printf("\n\n");
+}
+
+------------------------------
+
+/* Lab10_Popa_Larisa-Ancuta_Prob_11
+
+-se citesc de la tastatura elementele de tip întreg ale unei matrici patratice, utilizând o functie
+-se scrie o functie care determina numarul de elemente negative de deasupra diagonalei secundare
+-afisati rezultatul în main() (fara variabile globale)
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define DIM 100
+
+void cit_mat(int, int*); //citire elemente matrice patratica
+int neg(int, int*); //determina si returneaza nr de elem negative 
+
+int main()
+{
+	int n, a[DIM][DIM], *pa = &a[0][0];
+	printf("Introduceti dimensiunea matricei: ");
+	scanf("%d", &n);
+
+	cit_mat(n,pa);
+
+	if (neg(n, pa) != 0)
+		printf("\nExista %d elemente negative deasupra diagonalei principale.\n\n", neg(n, pa));
+	else
+		printf("\nNu exista elemente negative deasupra diagonalei principale!\n\n");
+
+	return 0;
+}
+
+void cit_mat(int n, int *pa)
+{
+	int i, j;
+
+	printf("\nIntroduceti elementele matricei:\n ");
+	for (i = 0;i < n;i++)
+	{
+		for (j = 0;j < n;j++)
+		{
+			printf("a[%d][%d]=", i, j);
+			scanf("%d", pa + i*n + j);
+		}
+	}
+}
+
+int neg(int n, int *pa)
+{
+	int i, j, nr = 0;
+
+	for (i = 0;i < n - 1;i++)
+	{
+		for (j = 0;j < n - i - 1;j++)
+		{
+			if (*(pa + i*n + j) < 0)
+				nr++;
+		}
+	}
+
+	return nr;
+}
+
+------------------------------
+
+/* Lab10_Popa_Larisa-Ancuta_Prob_12
+
+-se citesc de la tastatura elementele de tip întreg ale unei matrici patratice, utilizând o functie
+-se scrie o functie care interschimba doua linii ale matricii
+-se afiseaza cu o functie matricea initiala si cea obtinuta
+
+Dimensiunea matricii si numerele ce identifica liniile care vor fi interschimbate se citesc de la tastatura, în functia main.
+(fara variabile globale).
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define DIM 100
+
+void cit_mat(int, int*); //citire elemente matrice patratica
+void interschimbare(int, int*, int, int); //interschimbare liniii matrice
+void af_mat(int, int*); //afisare marice
+
+int main()
+{
+	int n, a[DIM][DIM], *pa = &a[0][0], l1, l2;
+
+	printf("Introduceti dimensiunea matricii: ");
+	scanf("%d", &n);
+
+	cit_mat(n, pa);
+
+	printf("\nLinii care vor fi schimbate: \n");
+	scanf("%d", &l1);
+	scanf("%d", &l2);
+
+	printf("\nMatricea initiala este:\n");
+	af_mat(n, pa);
+
+	interschimbare(n, pa, l1, l2);
+
+	printf("\nMatricea dupa interschimbare: \n");
+	af_mat(n, pa);
+
+	return 0;
+}
+
+void cit_mat(int n, int *pa)
+{
+	int i, j;
+
+	printf("\nIntroduceti elementele matricei:\n ");
+	for (i = 0;i < n;i++)
+	{
+		for (j = 0;j < n;j++)
+		{
+			printf("a[%d][%d]=", i, j);
+			scanf("%d", pa + i*n + j);
+		}
+	}
+}
+
+void interschimbare(int n, int *pa, int l1, int l2)
+{
+	int i, aux;
+	for (i = 0;i<n;i++)
+	{
+		aux = *(pa + l1*n + i);
+		*(pa + l1*n + i) = *(pa + l2*n + i);
+		*(pa + l2*n + i) = aux;
+	}
+}
+
+void af_mat(int n, int *pa)
+{
+	int i, j;
+
+	for (i = 0;i<n;i++)
+	{
+		for (j = 0;j<n;j++)
+			printf("%4d", *(pa + i*n + j));
+
+		printf("\n");
+	}
+	printf("\n");
+}
+
+------------------------------
+
+/* Lab10_Popa_Larisa-Ancuta_Prob_13
+
+Considerând algoritmul care preia numerele de la tastatura direct ordonate crescator într-un tablou unidimensional, 
+folositi mecanismul de acces la elemente prin poinetri. 
+o functie care are ca parametri formali un pointer la un tablou unidimensional de tip float si dimensiunea.
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define DIM 100
+
+void dir_sort(int, float*); //sortare directa la adaugare
+void afisare(int, float*); //afisare tablou unidimensional
+
+int main()
+{
+	int n;
+	float  a[DIM], *pa = &a[0];
+
+	printf("Introduceti dimensiunea taboului: ");
+	scanf("%d", &n);
+
+	dir_sort(n, pa);
+
+	afisare(n, a);
+
+	return 0;
+}
+
+void dir_sort(int n, float *pa)
+{
+	int i, p;
+	float x;
+
+	for (i = 0; i < n; i++) 
+	{
+		printf("Introduceti un element: ");
+		scanf("%f", pa + i );
+
+		x = *(pa + i);
+		p = i - 1;
+
+		while (p >= 0 && *(pa + p) > x)
+		{
+			*(pa + (p + 1)) = *(pa + p);
+			p--;
+		}
+
+		*(pa + (p + 1)) = x;
+	}
+}
+
+
+void afisare(int n, float *pa)
+{
+	int i;
+	printf("\nTablou:\n");
+	for (i = 0;i<n;i++)
+		printf(" %4.2f  ", *(pa + i));
+
+	printf("\n\n");
+}
+
+------------------------------
+
+/* Lab10_Popa_Larisa-Ancuta_Prob_14
+
+-interclaseaza doua tablouri unidimensionale de tip întreg. 
+-se folosesc pointeri
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+#define DIM 100
+#define DIM_2 200
+
+void citire(int, int*); //citire elemente
+int ord(const void *, const void *); //ordonare crescatoare
+void interclasare(int, int*, int, int*); //interclasare tablouri(pe siruri ordonate)
+void afisare(int, int*); //afisare tablou
+
+int main()
+{
+	int n, a[DIM], m, b[DIM], *pa, *pb;
+
+	pa = &a[0];
+	pb = &b[0];
+
+	printf("Introduceti dimensiunea tabloului 1: ");
+	scanf("%d", &n);
+	citire(n, pa);
+	printf("\nIntroduceti dimensiunea tabloului 2: ");
+	scanf("%d", &m);
+	citire(m, pb);
+
+	qsort(pa, n, sizeof(int), ord);
+	qsort(pb, m, sizeof(int), ord);
+
+	interclasare(n, pa, m, pb);
+
+	return 0;
+}
+
+void citire(int n, int *p)
+{
+	int i;
+	printf("\nIntroduceti elementele: \n");
+	for (i = 0;i<n;i++)
+	{
+		printf("v[%d]=", i);
+		scanf("%d", p + i);
+	}
+}
+
+int ord(const void * a, const void * b)
+{
+	return (*(int*)a - *(int*)b);
+}
+
+void afisare(int n, int *p)
+{
+	int i;
+	for (i = 0;i<n;i++)
+		printf("%4d", *(p + i));
+}
+
+void interclasare(int n, int *pa, int m, int *pb)
+{
+	int c[DIM_2], *pc = &c[0], i = 0, j = 0, k = 0;
+
+	while (i<n && j<m)
+	{
+		if (*(pa + i)<*(pb + j))
+		{
+
+			*(pc + k) = *(pa + i);
+			i++;
+			k++;
+		}
+		else
+		{
+
+			*(pc + k) = *(pb + j);
+			j++;
+			k++;
+		}
+	}
+
+	while (i<n)
+	{
+
+		*(pc+ k) = *(pa + i);
+		i++;
+		k++;
+	}
+
+	while (j<m)
+	{
+
+		*(pc + k) = *(pb + j);
+		j++;
+		k++;
+	}
+
+	printf("\nInterclasare: \n");
+	afisare(k, pc);
+
+	printf("\n\n");
+}
+
+------------------------------
+
+/* Lab10_Popa_Larisa-Ancuta_Prob_15
+
+-ordonati crescator un tablou unidimensional de numere intregi citit de la tastatura folosind functia de biblioteca qsort( ) din stdlib.h
+-se foloseste acelasi algoritm pentru numere de tip float pe care sa le ordonati descrescator
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+#define DIM 100
+
+void cit_int(int, int*); //citire intregi
+void af_int(int, int*); //afisare intregi
+int crescator(const void *, const void *); //ordonare crescatoare
+void cit_fl(int, float*); //citire flotanti
+void af_fl(int, float*); //afisare flotanti
+int descrescator(const void *, const void *); //ordonare descrescatoare
+
+int main()
+{
+	int n, a[DIM], *in = &a[0];
+	printf("Introduceti dimensiunea tabloului de numere intregi:");
+	scanf("%d", &n);
+	cit_int(n, in);
+
+	qsort(in, n, sizeof(int), crescator);
+	af_int(n, in);
+
+
+	int m;
+	float b[DIM], *fl = &b[0];
+	printf("\n\nIntroduceti dimensiunea tabloului de numere reale:");
+	scanf("%d", &m);
+	cit_fl(m, fl);
+
+	qsort(fl, m, sizeof(float), descrescator);
+	af_fl(m, fl);
+
+	return 0;
+}
+
+void cit_int(int n, int *in)
+{
+	int i;
+	printf("\nIntroduceti elementele tabloului:\n");
+	for (i = 0;i<n;i++)
+	{
+		printf("a[%d]= ", i);
+		scanf("%d", in + i);
+	}
+}
+
+int crescator(const void * a, const void * b)
+{
+	return (*(int*)a - *(int*)b);
+}
+
+void af_int(int n, int *in)
+{
+	int i;
+	printf("\nDupa ordonarea crescatoare: \n");
+	for (i = 0;i<n;i++)
+		printf("%4d", *(in + i));
+}
+
+void cit_fl(int m, float *fl)
+{
+	int i;
+	printf("\nIntroduceti elementele tabloului: \n");
+	for (i = 0;i<m;i++)
+	{
+		printf("b[%d]= ", i);
+		scanf("%f", fl + i);
+	}
+}
+
+int descrescator(const void * a, const void * b)
+{
+	return (*(int*)b - *(int*)a);
+}
+
+void af_fl(int m, float *fl)
+{
+	int i;
+	printf("\nDupa ordonarea descrescatoare: \n");
+	for (i = 0;i < m;i++)
+		printf("%6.2f", *(fl + i));
+	printf("\n\n");
+}

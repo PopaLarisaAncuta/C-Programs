@@ -1,0 +1,396 @@
+/* Lab9_Popa_Larisa-Ancuta_Prob_1
+
+-se citesc elementele a doua tablouri unidimensionale de numere intregi
+-se afiseaza produsul scalar al acestora (in main())
+-se va folosi(ambele vor utiliza pointeri):
+     -o functie care preia elementele de la tastatura 
+	 -o functie care calculeaza produsul scalar
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define DIM 100
+
+void citire(int, int*); //citeste valorile tabloului prin intermediul unui pointer
+void produs_sc(int, int*, int*, int*); //acceseaza si determina produsul scalar prin intermediul pointerilor
+
+int main()
+{
+	int n, a[DIM], b[DIM], p;
+	printf("Inroduceti dimensiunea tablourilor: ");
+	scanf("%d", &n);
+
+	printf("\nTablou 1\n");
+	citire(n, a);
+	printf("Tablou 2\n");
+	citire(n,b);
+
+	produs_sc(n, a, b, &p);
+	printf("Produsul scalar a celor doi vectori este: %d \n\n", p);
+
+	return 0;
+}
+
+void citire(int n, int *x)
+{
+	int i;
+	printf("Introduceti elementele tabloului: \n");
+	for (i = 0;i < n;i++)
+	{
+		printf("x[%d]=",i);
+		scanf("%d", x+i);
+	}
+
+	printf("\n");
+}
+
+void produs_sc(int n, int *a, int *b, int *p)
+{
+	int i;
+	*p = 0;
+	for (i = 0;i < n;i++)
+		*p += (*(a + i))*(*(b + i));
+}
+
+------------------------------
+
+/* Lab9_Popa_Larisa-Ancuta_Prob_2
+
+-sa se genereze aleator 20 de numere intregi cu valori mai mici decât 50 (Folositi srand(), rand() si operatorul %)
+-sa se scrie o functie care elimina din tabloul unidimensional creat numerele impare (utilizeaza pointeri)
+-sa se afiseze tabloul initial si cel obtinut dupa eliminarea elementelor impare (in main())
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define DIM 20
+#define MAX 50
+
+int * random(); //genereaza 20 de elemente random mai mici decat 50
+void elim_imp(int*, int*); //elimina elementele impare din tablou
+
+
+int main()
+{
+	int *a;
+	int i, n;
+
+	a = random();
+
+	printf("\nTabloul initial\n");
+	for (i = 0; i <DIM; i++)
+		printf("%d  ",a[i]);
+
+	printf("\n\nTabloul dupa eliminarea elementelor impare\n ");
+	elim_imp(a, &n);
+	for(i=0;i<n;i++)
+		printf("%d  ", a[i]);
+	printf("\n\n");
+}
+
+int * random() {
+	static int r[DIM];
+	int i;
+	
+	printf("Numere random:\n");
+
+	srand((unsigned)time(NULL));
+	for (i = 0; i < DIM; ++i)
+	{
+		r[i] = rand() % MAX;
+		printf("a[%d] = %d\n", i, r[i]);
+	}
+	return r;
+}
+
+void elim_imp(int *a, int *n)
+{
+
+	int i, j, nr = DIM;
+
+	for (i = 0;i < nr;i++)
+	{
+		if (*(a + i) % 2 != 0)
+		{
+			for (j = i + 1;j < nr;j++)
+				*(a + j - 1) = *(a + j);
+			nr--;
+			i--;
+		}
+	}
+
+	*n = nr;
+}
+
+------------------------------
+
+/* Lab9_Popa_Larisa-Ancuta_Prob_3
+
+-sa se citeasca de la tastatura numere reale(vor fi stocate într-un tablou unidimensional)
+-sa se scrie o functie care copiaza intr-un alt tablou toate valorile din primul tablou
+   care sunt mai mari decât valoarea medie a numerelor preluate (se folosesc pointeri)
+-sa se afiseze valorile din cele doua tablouri (in main())
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define DIM 100
+
+void citire(int, float[DIM]); //citeste elementele tabloului
+float medie(int, float*); //calculeaza media elementelor din primul tablou
+void tablou_nou(int, float*, float*); //copiaza intr-un alt tablou valorile mai mari decat media elementelor primului tablou
+
+int main()
+{
+	int n, i;
+	float a[DIM], b[DIM];
+	printf("Introduceti dimensiunea tabloului: ");
+	scanf("%d", &n);
+
+	citire(n, a);
+
+	printf("\nPrimul tablou \n");
+	for (i = 0;i < n;i++)
+		printf("%6.2f", a[i]);
+
+	printf("\n\nAl doilea tablou(valorile mai mari decat media valorilor din tabloul 1)\n");
+	tablou_nou(n, a, b);
+
+	printf("\n\n");
+
+	return 0;
+}
+
+void citire(int n, float a[DIM])
+{
+	int i;
+	printf("Introduceti elementele tabloului: \n");
+	for (i = 0;i < n;i++)
+	{
+		printf("a[%d]=",i);
+		scanf("%f", &a[i]);
+	}
+
+}
+
+float medie(int n, float *a)
+{
+	int i;
+	float suma = 0;
+
+	for (i = 0;i < n;i++)
+		suma += *(a + i);
+
+	return suma / n;
+}
+
+void tablou_nou(int n, float *a, float *b)
+{
+	int nr = 0, i;
+	for (i = 0;i < n;i++)
+	{
+		if (*(a+i) > medie(n, a))
+		{
+			*(b+nr) = *(a+i);
+			nr++;
+		}
+	}
+
+	for (i = 0;i < nr;i++)
+		printf("%6.2f", *(b + i));
+}
+
+------------------------------
+
+/* Lab9_Popa_Larisa-Ancuta_Prob_4
+
+-sa se citeasca de la tastatura un sir de caractere
+-sa se elimine din sir caracterele care se repeta
+-sa se afiseze in final sirul obtint(se folosesc pointeri)
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+
+#define DIM 100
+
+void afisare(char*); //afiseaza sirul caracter cu caracter
+void eliminare(char*); //elimina din sir caracterele care se repeta
+
+int main()
+{
+	char s[DIM];
+	printf("Introduceti un sir de caractere: ");
+	scanf("%s", &s);
+
+	printf("\nSirul dupa eliminarea caracterelor care se repeta: \n");
+	eliminare(s);
+	afisare(s);
+	printf("\n\n");
+
+	return 0;
+}
+
+void afisare(char *s)
+{
+	int i;
+	for (i = 0;i < strlen(s); i++)
+		printf("%c", *(s + i));
+}
+
+void eliminare(char *s)
+{
+	int i, j, k, n = strlen(s);
+	for (i = 0;i < n; i++)
+	{
+		for (j = i + 1;j < n;j++)
+		{
+			if (*(s + i) == *(s + j))
+			{
+				for (k = j;k < n;k++)
+					*(s + k) = *(s + k + 1);
+				n--;
+				i--;
+			}
+		}
+	}
+}
+
+------------------------------
+
+/* Lab9_Popa_Larisa-Ancuta_Prob_5
+
+-sa se citeasca de la tasatura doua siruri de caractere
+-sa se afiseze numarul de caractere prin care ele difera 
+    -nr. de caract. care exista în primul si nu exista în al doilea + nr. de caract. care exista în al doilea si nu exista în primul
+-sa se foloseasca pointeri pentru accesul la elementele tablourilor
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+
+#define DIM 100
+
+void eliminare(char*); //elimina caracterele care se repeta dintr-un sir
+int nrc_dif(char*, char*); //numara caracterele care apar intr-un sir si nu apar in celalalt
+
+int main()
+{
+	char s1[DIM], s2[DIM];
+	int nr = 0;
+
+	printf("Introduceti primul sir de caractere: ");
+	scanf("%s", &s1);
+
+	printf("Introduceti al doilea sir de caractere: ");
+	scanf("%s", &s2);
+
+	eliminare(s1);
+	eliminare(s2);
+
+	nr = nrc_dif(s1, s2) + nrc_dif(s2, s1);
+
+	printf("\nNumarul de caractere prin care difera cele doua siruri este: %d \n\n", nr);
+
+	return 0;
+}
+
+void eliminare(char *s)
+{
+	int i, j, k, n = strlen(s);
+	for (i = 0;i < n; i++)
+	{
+		for (j = i + 1;j < n;j++)
+		{
+			if (*(s + i) == *(s + j))
+			{
+				for (k = j;k < n;k++)
+					*(s + k) = *(s + k + 1);
+				n--;
+				i--;
+			}
+		}
+	}
+}
+
+int nrc_dif(char *s1, char *s2)
+{
+	int i, j, nr = 0;
+	bool ok;
+
+	for (i = 0;i < strlen(s1);i++)
+	{
+		ok = false;
+		for(j=0;j<strlen(s2);j++)
+		{
+			if (*(s1 + i) == *(s2 + j))
+			{
+				ok = true;
+				break;
+			}
+		}
+		if (!ok) //daca nu gaseste caracterul dintr-un sir in celalalt 
+			nr++; //creste numarul de caractere
+	}
+	return nr;
+}
+
+------------------------------
+
+/* Lab9_Popa_Larisa-Ancuta_Prob_6
+
+-sa se citeasca de la tastatura un sir de caractere
+-sa se scrie o functie care afiseaza(se folosesc pointeri):
+    -caracterele ce compun sirul
+	-numarul de aparitii ale fiecaruia
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+
+#define DIM 100
+
+void afisare_ap(char*); //afiseaza caracterele si numarul de aparitii al caracterelor
+
+int main()
+{
+	char s[DIM];
+	printf("Introduceti un sir de caractere: ");
+	scanf("%s", &s);
+
+	afisare_ap(s);
+
+	return 0;
+}
+
+void afisare_ap(char *s)
+{
+
+	int nr[127] = { 0 }, i;
+	char c;
+
+	for (i = 0;i < strlen(s);i++)
+		nr[*(s + i)]++; //frecventa fiecarui caracter din sir
+
+	for(c='a';c<='z';c++)
+	{
+		if (nr[c] != 0)
+			printf("\nCaracterul %c apare de %d ori.", c, nr[c]);
+	}
+
+	printf("\n\n");
+}

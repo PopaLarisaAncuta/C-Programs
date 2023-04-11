@@ -1,0 +1,874 @@
+/* Lab11_Popa_Larisa-Ancuta_Prob_1
+
+-sa se scrie un program care citeste n numere reale, pe care le stocheaza într-un tablou alocat dinamic
+-afiseaza suma elementelor negative citite
+-la sfârsit elibereaza zona de memorie alocata
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <malloc.h>
+
+void afisare(int, float*); //afiseaza tabloul de numere reale
+void s_neg(int, float*); //afiseaza suma elementelor negative 
+
+int main()
+{
+	int n, i;
+	float *a = NULL;
+
+	printf("\Introduceti dimensiunea sirului: ");
+	scanf("%d", &n);
+
+	if (a = (float*)malloc(n * sizeof(float)))
+	{
+		for (i = 0;i < n;i++)
+		{
+			printf("a[%d]= ", i + 1);
+			scanf("%f", a + i);
+		}
+	}
+	else
+		printf("\nAlocarea nu a putut fi realizata!\n\n");
+
+	afisare(n, a);
+
+	s_neg(n, a);
+
+	if (a)
+		free(a); //elibereaza zona de memorie alocata
+
+	return 0;
+}
+
+void afisare(int n, float *a)
+{
+	int i;
+
+	printf("\nTablou:\n");
+	for (i = 0;i < n;i++)
+		printf("%6.2f", *(a + i));
+
+	printf("\n");
+}
+
+void s_neg(int n, float *a)
+{
+	int i;
+	float s = 0;
+
+	for (i = 0;i < n;i++)
+	{
+		if (*(a + i) < 0)
+			s += *(a + i);
+	}
+
+	printf("\nSuma elementelor negative este: %4.2f \n\n", s);
+}
+
+------------------------------
+
+/* Lab11_Popa_Larisa-Ancuta_Prob_2
+
+-o aplicatie de gestiune distribuita care considera ca trateaza activitatea din 5 orase diferite
+-în fiecare oras fiind 3 birouri de vânzare pe teritoriul respectiv
+-sa se creeze în cadrul unei functii un tablou de 5 pointeri catre date de tip flotant
+-fiecare pointer din acest tablou referind o zona în heap alocata dinamic de 3 date flotante ce reprezinta situatia vânzarilor la sfarsitul unei zile
+
+-se cere prelucrarea datelor din fiecare oras, respectiv din fiecare birou de vânzare, prelucrare ce va include:
+- functie care permite introducerea datelor pentru cele 5 orase si respectiv pentru fiecare oras pentru cele 3 magazine din oras
+- functie ce permite determinarea totalului de vânzari pe fiecare oras în parte
+     valoare pe care o va returna astfel ca în programul principal se va calcula si afisa media vânzarilor din toate cele 5 orase;
+- functie care va permite eliberarea spatiului de memorie alocat dinamic astfel încât daca aceeasi firma are alte 3 magazine 
+     în cele 5 orase de profil diferit sa poata realoca un spatiu echivalent pentru noile prelucrari pe care le va efec
+
+Program C */
+
+#include <iostream>
+using namespace std;
+
+#define DIM_O 5
+#define DIM_M 3
+
+void int_date(float *[]); //introducere date
+float total_vanzari(float*); //tolat vanzari dintr-un oras
+void eliberare_spatiu(float *[]); //eliberare spatiu alocat
+
+void main()
+{
+	int i;
+	float *o[DIM_O], s = 0;
+
+	int_date(o);
+
+	cout << endl;
+	for (i = 0;i<DIM_O;i++)
+	{
+		cout << "Total orasul " << i << " : " << total_vanzari(o[i])<< endl;
+		s += total_vanzari(o[i]);
+	}
+
+	cout << endl << "Media vanzarilor: " << s / 5 << endl;
+
+	eliberare_spatiu(o);
+}
+
+void int_date(float *o[])
+{
+	int i, j;
+
+	for (i = 0;i<DIM_O;i++)
+	{
+		*(o + i) = new float[DIM_M];
+
+		cout << "Orasul " << i << endl;
+		for (j = 0;j<DIM_M;j++)
+		{
+			cout << "   Magazinul " << j << ": ";
+			cin >> *(o[i] + j);
+
+		}
+	}
+}
+
+float total_vanzari(float *o)
+{
+	int i;
+	float s = 0;
+
+	for (i = 0;i<DIM_M;i++)
+		s += *(o + i);
+
+	return s;
+}
+
+void eliberare_spatiu(float *o[])
+{
+	int i;
+
+	for (i = 0;i<DIM_O;i++)
+		delete[] * (o + i);
+}
+
+------------------------------
+
+/* Lab11_Popa_Larisa-Ancuta_Prob_3
+
+-sa se scrie o aplicatie C/C++, care aloca dinamic memorie pentru stocarea elementelor a doua matrici de "m" linii si "n" coloane
+-sa se scrie o functie care calculeaza suma celor doua matrici
+-o functie pentru afisarea unei matrici
+-sa se afiseze matricile initiale si matricea obtinuta
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <malloc.h>
+
+#define DIM 100
+
+void cit_mat(int, int, int*); //citire matrice
+void suma(int, int, int*, int*, int*); //suma matricelor
+void af_mat(int, int, int*); //afisare matrice
+
+int main()
+{
+	int m, n, *pa, *pb, *ps;
+
+	printf("Linii: ");
+	scanf("%d", &m);
+	printf("Coloane: ");
+	scanf("%d", &n);
+
+	printf("\nMatricea 1\n");
+	if (pa = (int*)malloc(m*n * sizeof(int)))
+		cit_mat(m, n, pa);
+	else
+		printf("\nAlocare nereusita!");
+
+	printf("\nMatricea 2\n");
+	if (pb = (int*)malloc(m*n * sizeof(int)))
+		cit_mat(m, n, pb);
+	else
+		printf("\nAlocare nereusita!");
+
+	printf("\nMatricea 1\n");
+	af_mat(m, n, pa);
+	printf("\nMatricea 2\n");
+	af_mat(m, n, pb);
+
+	printf("\nMatricea suma\n");
+	if (ps = (int*)malloc(m*n * sizeof(int)))
+		suma(m, n, pa, pb, ps);
+	else
+		printf("\nAlocare nereusita!");
+
+	af_mat(m, n, ps);
+
+	//eliberare spatiu
+	if (pa)
+		free(pa);
+	if (pb)
+		free(pb);
+	if (ps)
+		free(ps);
+
+	return 0;
+}
+
+void cit_mat(int m, int n, int *p)
+{
+	int i, j;
+
+	for (i = 0;i<m;i++)
+		for (j = 0;j<n;j++)
+		{
+			printf("m[%d][%d]= ", i, j);
+			scanf("%d", p + i*n + j);
+		}
+}
+
+void suma(int m, int n , int *pa, int *pb, int *ps)
+{
+	int i, j;
+
+	for (i = 0;i<m;i++)
+		for (j = 0;j<n;j++)
+			*(ps + i*n + j) = *(pa + i*n + j) + *(pb + i*n + j);
+}
+
+void af_mat(int m, int n, int *p)
+{
+	int i, j;
+
+	for (i = 0;i<m;i++) 
+	{
+		for (j = 0;j<n;j++) 
+			printf("%4d ", (*(p + i*n + j)));
+		printf("\n");
+	}
+}
+
+------------------------------
+
+/* Lab11_Popa_Larisa-Ancuta_Prob_4
+
+-sa se scrie o aplicatie C/C++ care aloca dinamic memorie pentru "n" siruri de caractere, care se vor citi de la tastatura
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <malloc.h>
+#include <string.h>
+
+#define DIM 100
+
+void citire(int, char**); //alocare si citire siruri
+void afisare(int, char**); //afisare siruri
+void eliberare(int, char**); //eliberare memorie
+
+int main()
+{
+	int n;
+	char **pc;
+
+	printf("Introduceti numarul de siruri: ");
+	scanf("%d", &n);
+
+	if (pc = new char*[n])
+		citire(n, pc);
+	else
+		printf("Alocare nereusita!");
+
+	afisare(n, pc);
+
+	eliberare(n, pc);
+
+	return 0;
+}
+
+void citire(int n, char **pc)
+{
+	int i;
+
+	for (i = 0;i < n;i++)
+	{
+		pc[i] = new char[DIM];
+		printf("Sirul %d :", i);
+		scanf("%s", pc[i]);
+	}
+}
+
+void afisare(int n, char **pc)
+{
+	printf("\nSiruri:\n");
+
+	for (int i = 0;i<n;i++)
+		printf("%s \n", pc[i]);
+}
+
+void eliberare(int n, char **pc)
+{
+	int i;
+
+	for (i = 0;i<n;i++)
+	{
+		if (pc[i] != NULL)
+			delete[]pc[i];
+	}
+
+	if (pc != NULL)
+		delete[]pc;
+
+}
+
+------------------------------
+
+/* Lab11_Popa_Larisa-Ancuta_Prob_5
+
+-declarati un pointer global de tip float
+-in functia main() cititi o valoare întreaga N care reprezinta dimensiunea tabloului de numere reale
+-alocati memoria necesara pentru stocarea tabloului
+-cititi elementele de la tastatura
+-determinati valoarea medie a celor N elemente
+-calculati Mn=(sum(pow((xi-xmed),n))/N, unde n=1,2,3
+-afisati rezultatele si apoi eliberati memoria-
+-folositi functiile malloc() si free()
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <malloc.h>
+#include <math.h>
+#include <stdlib.h>
+#include <time.h>
+
+float *p;
+
+void citire(int); //citire elemente
+float medie(int); //media elementelor
+float sum(int, int); //calculul sumei pentru n
+
+int main(void)
+{
+	int N, i, j, n = 1;
+	float Mn;
+
+	printf("Introduceti dimensiunea tabloului: ");
+	scanf("%d", &N);
+
+	if (p = (float*)malloc(N * sizeof(float)))
+		citire(N);
+
+	do
+	{
+		Mn = sum(N, n) / N;
+		printf("\nPentru n=%d   Mn= %0.2f", n, Mn);
+		n++;
+	} while (n != 4);
+	printf("\n\n");
+
+	if (p)
+		free(p);
+
+}
+
+void citire(int N)
+{
+	int i;
+
+	printf("\nIntroduceti elementele tabloului: \n");
+	for (i = 0;i < N;i++)
+	{
+		printf("p[%d]= ", i);
+		scanf("%f", p + i);
+	}
+}
+
+float medie(int N)
+{
+	int i;
+	float s = 0;
+
+	for (i = 0;i < N;i++)
+		s += *(p + i);
+
+	return (float)s / N;
+
+}
+
+float sum(int N,int n)
+{
+	int i;
+	float s = 0, xmed = medie(N);
+
+	for (i = 0;i < N;i++)
+	{
+		float xi = *(p + i);
+		s += pow(xi - xmed, n);
+	}
+
+	return s;
+}
+
+------------------------------
+
+/* Lab11_Popa_Larisa-Ancuta_Prob_6
+
+-folositi alocarea dinamica pentru o matrice m x n cu valori întregi (m, n <7)
+-initializati elementele matricii
+-daca matricea este patratica, folositi metoda lui Sarrus pentru a obtine valoarea determinantului
+-afisati rezultatul
+-eliberati memoria
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <malloc.h>
+
+#define DIM 7
+
+void cit_mat(int, int, int*); //citire matrice
+void af_mat(int, int, int*); //afisare matrice
+void Sarrus(int, int*); //metoda lui Sarrus(determinant)
+
+int main()
+{
+	int m, n, *pa;
+
+	printf("Linii: ");
+	scanf("%d", &m);
+	printf("Coloane: ");
+	scanf("%d", &n);
+
+	if (m >= DIM || n >= DIM)
+		printf("Dimensiuni prea mari!");
+
+	if (m == n)
+		pa = (int*)malloc(((2 * m - 1)*m * sizeof(int)));
+	else
+		pa = (int*)malloc(m*n * sizeof(int));
+
+	printf("\nIntroduceti elementele matricii\n");
+	cit_mat(m, n, pa);
+
+	printf("\nMatricea\n");
+	af_mat(m, n, pa);
+
+	if (m == n && n == 3)
+		Sarrus(n, pa);
+	else
+		printf("Matricea nu este patratica!");
+
+	if (pa)
+		free(pa);
+
+	return 0;
+}
+
+void cit_mat(int m, int n, int *p)
+{
+	int i, j;
+
+	for (i = 0;i<m;i++)
+		for (j = 0;j<n;j++)
+		{
+			printf("m[%d][%d]= ", i, j);
+			scanf("%d", p + i*n + j);
+		}
+}
+
+void af_mat(int m, int n, int *p)
+{
+	int i, j;
+
+	for (i = 0;i<m;i++)
+	{
+		for (j = 0;j<n;j++)
+			printf("%4d ", *(p + i*n + j));
+		printf("\n");
+	}
+}
+
+void Sarrus(int n, int *pa)
+{
+	int i, j, p, det = 0;
+
+	//matricea extinsa
+	for (i = 0;i<n - 1;i++)
+		for (j = 0;j<n;j++)
+			*(pa + (n + i)*n + j) = *(pa + i*n + j);
+
+	//suma produselor diagonalelor descendente
+	for (i = 0;i<n;i++)
+	{
+		p = 1;
+		p *= *(pa + i*n)*(*(pa + (i + 1)*n + 1))*(*(pa + (i + 2)*n + 2));
+		det += p;
+	}
+
+	//suma produselor diagonalelor ascendente
+	for (i = 0;i<n;i++)
+	{
+		p= 1;
+		p *= *(pa + i*n + 2)*(*(pa + (i + 1)*n + 1))*(*(pa + (i + 2)*n));
+		det -= p;
+	}
+
+	printf("\nDeterminantul matricii este: %d \n\n ", det);
+}
+
+------------------------------
+
+/* Lab11_Popa_Larisa-Ancuta_Prob_7
+
+-sa se scrie o aplicatie C/C++ care aloca dinamic memorie necesara pentru stocarea a 10.000 de numere întregi
+-programul initializeaza numerele cu valori aleatoare între 1 si 100 (folositi functiile srand() si/sau rand() în VC++)
+-scrieti o functie care afiseaza cele mai frecvente 10 numere si numarul lor de aparitii în tabloul initial
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <malloc.h>
+
+#define MIN 1
+#define MAX 100
+#define DIM 10000
+
+int *random(); //genereaza 10000 de numere intregi
+void nr_ap(int*, int*); //stocheaza numarul de aparitii al fiecarui nr
+void ordonare(int*); //ordoneaza crescator
+void fregvente(int*); //afiseaza cele mai fregvente 10 numere si numarul de aparitii
+
+int  *pa, ap[MAX][2] = { 0 }, *p_ap = &ap[0][0];
+
+int main(void)
+{
+	if (pa = (int*)malloc(10000 * sizeof(int)))
+	{
+		pa = random();
+		nr_ap(pa, p_ap);
+	}
+	else
+		printf("\nAlocare nereusita!");
+
+	ordonare(p_ap);
+	fregvente(p_ap);
+
+}
+
+int * random()
+{
+	static int r[DIM];
+	int i;
+
+	printf("Numere random:\n");
+
+	srand((unsigned)time(NULL));
+
+	for (i = 0; i < DIM; ++i)
+	{
+		r[i] = rand() % MAX + MIN;
+		printf("a[%d] = %d\n", i, r[i]);
+	}
+
+	return r;
+}
+
+void nr_ap(int *pa, int *p_ap)
+{
+	int i, j, nr;
+
+	for (i = 1;i <= MAX;i++)
+	{
+		nr = 0;
+		for (j = 0;j < DIM;j++)
+			if (*(pa + j) == i)
+			{
+				*(p_ap + i * 2 + 0) = i; //salvam nr pentru care aflam nr de aparitii
+				nr++;
+			}
+		*(p_ap + i * 2 + 1) = nr; //salvam numarul de aparitii al numarului
+	}
+}
+
+void ordonare(int *p_ap)
+{
+	int aux, i, j;
+
+	for (i = 0;i < MAX-1;i++)
+	{
+		for (j = i + 1;j < MAX;j++)
+		{
+			if (*(p_ap + i * 2 + 1) < *(p_ap + j * 2 + 1))
+			{
+				aux = *(p_ap + i * 2 + 1);
+				*(p_ap + i * 2 + 1) = *(p_ap + j * 2 + 1);
+				*(p_ap + j * 2 + 1) = aux;
+			}
+		}
+	}
+}
+
+void fregvente(int *p_ap)
+{
+	int i;
+
+	printf("\nCele mai fregvente 10 numere sunt: \n");
+	for (i = 0;i < 10;i++)
+		printf("Numarul %d apare de %d ori.\n", *(p_ap + i * 2 + 0), *(p_ap + i * 2 + 1));
+	printf("\n\n");
+}
+
+------------------------------
+
+/* Lab11_Popa_Larisa-Ancuta_Prob_8
+
+-sa se scrie o aplicatie C/C++ în care se aloca dinamic memorie pentru n numere întregi, numere ce vor fi citite de la tastatura
+-sa se scrie functia care extrage radicalul din fiecare numar
+-stocheaza valorile obtinute într-un alt tablou alocat dinamic
+-sa se afiseze numerele initiale si valorile din tabloul format
+-eliberati la sfârsit memoria alocata
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <malloc.h>
+
+#define DIM 100
+
+void citire(int, int*); //citire valori
+void radical(int, int*, float *); //crearea tabloului de radicali
+void afisare(int, int*, float*); //afisarea valorilor initiale si valorilor finale
+
+
+int main()
+{
+	int n, *p;
+	float a[DIM], *pa = &a[0];
+
+	printf("Introduceti dimensiunea tabloului: ");
+	scanf("%d", &n);
+
+	if (p = (int*)malloc(n * sizeof(int)))
+	{
+		citire(n, p);
+		radical(n, p, pa);
+		afisare(n, p, pa);
+	}
+	
+	if (p)
+		free(p);
+
+	return 0;
+}
+
+void citire(int n, int *p)
+{
+	int i;
+
+	for (i = 0;i<n;i++)
+	{
+		printf("a[%d]= ", i);
+		scanf("%d", p + i);
+	}
+}
+
+void radical(int n, int *p, float *pa)
+{
+	int i, val;
+
+	for (i = 0;i < n;i++)
+		*(pa + i) = (float)(sqrt(*(p + i)));
+}
+
+void afisare(int n, int *p, float *pa)
+{
+	int i;
+
+	printf("\nValorile initiale:");
+	for (i = 0;i<n;i++)
+		printf("\n %d ", *(p + i));
+
+	printf("\n\nValorile dupa aplicarea radicalului:");
+	for (i = 0;i<n;i++)
+		printf("\n %0.2f ", *(pa + i));
+
+	printf("\n\n");
+}
+
+------------------------------
+
+/* Lab11_Popa_Larisa-Ancuta_Prob_9
+
+-scrieti un program în care se citesc n siruri de caractere si se concateneaza într-un alt sir, alocat dinamic
+-repetati operatia de câte ori doreste utilizatorul
+-dupa fiecare afisare a sirului obtinut prin concatenare eliberati memoria alocata dinamic
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <malloc.h>
+#include <string.h>
+
+#define DIM 3
+#define DIM2 100
+
+void citire_siruri(int, char[DIM2], char*); //citeste n siruri de caractere
+
+int main()
+{
+	int n, ok = 1;
+	char *p = NULL, sir[DIM2];
+
+	printf("Doriti sa continuati? (1-DA/0-NU)\n");
+	scanf("%d", &ok);
+
+	while (ok == 1)
+	{
+		printf("\nIntrouceti numarul de siruri: ");
+		scanf("%d", &n);
+
+		if ((p = (char  *)malloc(256 * n * sizeof(int))))
+		{
+			printf("\nIntroduceti un sir de caractere: ");
+			scanf("%s", &sir);
+			strcpy(p, sir);
+
+			int i;
+
+			for (i = 1;i < n;i++)
+			{
+				printf("Introduceti un sir de caractere: ");
+				scanf("%s", &sir);
+				strcat(p, sir);
+			}
+
+			*(p + strlen(p)) = NULL;
+
+			printf("\nSirul obtinut prin concatenare: %s", p);
+		}
+		else
+			printf("\nEroare alocare!\n\n");
+
+		if (p)
+			free(p);
+
+		printf("\n\nDoriti sa continuati? (1-DA/0-NU)\n");
+		scanf("%d", &ok);
+	}
+
+	return 0;
+}
+
+void citire(int n, char sir[DIM2], char *p)
+{
+	int i;
+
+	for (i = 1;i < n;i++)
+	{
+		printf("\nIntroduceti un sir de caractere: ");
+		scanf("%s", &sir);
+		strcat(p, sir);
+	}
+}
+
+------------------------------
+
+/* Lab11_Popa_Larisa-Ancuta_Prob_10
+
+-aloca dinamic memorie pentru stocarea elementelor unei matrici de dimensiune nxn
+-sa se scrie o functie care calculeaza suma numerelor pozitive pare de sub diagonala principala si o functie pentru afisarea matricei
+-sa se afiseze matricea si suma ceruta
+-eliberati memoria alocata dinamic
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <malloc.h>
+
+void cit_matrice(int, int*); //citire matrice
+void af_matrice(int, int*); //afisare matrice
+void suma(int, int*); //suma elementelor de sub diagonala principala
+
+void main()
+{
+	int n, *m;
+
+	printf("Introduceti dimensiunile matricii: ");
+	scanf("%d", &n);
+
+	if (m = (int*)malloc(n*n * sizeof(int)))
+	{
+		cit_matrice(n, m);
+		af_matrice(n, m);
+		suma(n, m);
+	}
+	else
+		printf("\nAlocare nereusita!");
+
+	if (m)
+		free(m);
+}
+
+void cit_matrice(int n,int *m)
+{
+	int i, j;
+
+	printf("Introduceti elementele matricii :\n");
+	for (i = 0;i<n;i++)
+	{
+		for (j = 0;j<n;j++)
+		{
+			printf("m[%d][%d]=", i, j);
+			scanf("%d", m + i*n + j);
+		}
+	}
+}
+
+void af_matrice(int n, int *m)
+{
+	int i, j;
+	printf("\nMatricea: \n");
+
+	for (i = 0;i<n;i++)
+	{
+		for (j = 0;j < n;j++)
+			printf("%4d", *(m + i*n + j));
+		printf("\n");
+	}
+}
+
+void suma(int n, int *m)
+{
+	int s = 0, i, j;
+
+	for (i = 0;i<n;i++)
+		for (j = 0;j<n;j++)
+			if ((i>j) && (*(m + i*n + j) % 2 == 0))
+				s += *(m + i*n + j);
+
+	printf("\nSuma elementelor pare de sub diagonala principala este: %d \n\n", s);
+}
+
+------------------------------
+
+
+
+------------------------------
+
+
+
+------------------------------

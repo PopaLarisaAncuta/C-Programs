@@ -1,0 +1,462 @@
+/* lab5_Popa_Larisa-Ancuta_prob_1
+
+-R1,R2 valorile rezistentelor (numere intregi)
+-apeleaza functii ce calculeaza rezistenta echivalenta gruparii serie/paralel
+-afiseaza valorile returnate cu 3 zecimale si aliniere la dreapta
+
+program C
+*/
+
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+
+int cit_val(void); //citire valori intregi
+float R_serie(int x, int y); //calculul rezistentei echivalente serie
+float R_paralel(int x, int y); //calculul rezistentei echivalente paralel
+
+int main()
+{
+	int R1, R2;
+	printf("Introduceti valorile rezistentelor\n");
+	R1 = cit_val();
+	R2 = cit_val();
+
+	float Rs, Rp;
+	Rs = R_serie(R1, R2);
+	Rp = R_paralel(R1, R2);
+
+	printf("\nRezistenta echivalenta serie: %0.3f", Rs);
+	printf("\nRezistenta echivalenta paralel: %0.3f \n", Rp);
+}
+
+int cit_val(void)
+{
+	int x;
+	printf("Introduceti o valoare intreaga: ");
+	scanf("%d", &x);
+	return x;
+}
+
+float R_serie(int x, int y)
+{
+	return (float)x + y;
+}
+
+float R_paralel(int x, int y)
+{
+	return (float)(x*y) / (float)(x + y);
+}
+
+------------------------------
+
+/* lab5_Popa_Larisa-Ancuta_prob_2
+
+-C1,C2 valori de capacitati 
+-apeleaza functii ce calculeaza capacitatea echivalenta gruparii serie/paralel
+-afiseaza valorile returnate cu 4 zecimale si aliniere la stânga
+
+program C
+*/
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+
+float cit_val(void); //citire valori
+float c_serie(int x, int y); //calculul capacitatii echivalente serie
+float c_paralel(int x, int y); //calculul capacitatii echivalente paralel
+
+int main()
+{
+	float C1, C2, Cs, Cp;
+	printf("Valorile capacitatilor \n");
+	C1 = cit_val();
+	C2 = cit_val();
+
+	Cs = c_serie(C1, C2);
+	Cp = c_paralel(C1, C2);
+
+	printf("Capacitatea echivalenta a gruparii serie este: %-0.4f \n", Cs);
+	printf("Capacitatea echivalenta a gruparii paralel este: %-0.4f \n", Cp);
+}
+
+float cit_val(void)
+{
+	float x;
+	printf("Introduceti o valoare:");
+	scanf("%f", &x);
+	return x;
+}
+
+float c_serie(int x, int y)
+{
+	return (float)(x*y) / (float)(x + y);
+}
+
+float c_paralel(int x, int y)
+{
+	return x + y;
+}
+
+------------------------------
+
+/* lab5_Popa_Larisa-Ancuta_prob_3
+
+-cititi de la tastatura doua valori întregi(catetele unui triunghi dreptunghic)
+-determinati: ipotenuza,perimetrul triunghiului(afisate pe linii diferite)
+
+program C
+*/
+
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+#include<cmath>
+
+int cit_val(void); //citire valori intregi
+float ipotenuza(int x, int y); //calculul ipotenuzei(teorema lui Pitagora)
+
+int main()
+{
+	int c1, c2;
+	printf("Introduceti valorile catetelor\n");
+	c1 = cit_val();
+	c2 = cit_val();
+
+	float ip,P;
+	ip = ipotenuza(c1, c2);
+	printf("\nValoarea ipotenuzei este: %f", ip);
+
+	P = c1 + c2 + ip;
+	printf("\nPerimetrul triunghiului este: %f \n", P);
+}
+
+int cit_val(void)
+{
+	int x;
+	printf("Introduceti o valoare intreaga: ");
+	scanf("%d", &x);
+	return x;
+}
+
+float ipotenuza(int x, int y)
+{
+	int val = x*x + y*y;
+	return sqrt(val);
+}
+
+------------------------------
+
+/*lab5_Popa_Larisa-Ancuta_prob_4
+
+-cititi de la tastatura doua valori întregi a si b (a diferit de 0, ax+b=0)
+-rezolvati ecuatia si afisati rezultatul
+
+proogram C
+*/
+
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+
+int cit_val(void); //citire valori intregi
+float rez_ec(int x, int y); //rezolvarea ecuatiei de grad 1
+
+int main()
+{
+	int a, b;
+	printf("Valorile coeficientilor \n");
+	a = cit_val();
+	b = cit_val();
+
+	float x = rez_ec(a, b);
+	printf("Rezultatul ecuatiei %dx + %d = 0 este x=%f \n", a, b, x);
+}
+
+int cit_val(void)
+{
+	int x;
+	printf("Introduceti o valoare: ");
+	scanf("%d", &x);
+	return x;
+}
+
+float rez_ec(int x, int y)
+{
+	return (float)(-y) / x;
+}
+
+------------------------------
+
+/* lab5_Popa_Larisa-Ancuta_prob_5
+
+-C1,C2 capaciati(valori intregi)
+-calculati valorile gruparii serie si paralel
+-includeti si situatia cu rezistentele
+
+program C
+*/
+
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+
+int cit_val(void); //citire valori intregi
+float functia_1(int x, int y); //calculul: rezistentei echivalente serie/capacitatii echivalente paralel
+float functia_2(int x, int y); //calculul: rezistentei echivalente paralel/capacitatii echivalente serie
+
+int main()
+{
+	int C1, C2, R1, R2;
+	float Cs, Cp, Rs, Rp;
+
+	printf("Introduceti valorile capacitatilor\n");
+	C1 = cit_val();
+	C2 = cit_val();
+
+	Cs = functia_2(C1, C2);
+	Cp = functia_1(C1, C2);
+
+    printf("Capacitatea echivalenta a gruparii serie este: %f \n", Cs);
+	printf("Capacitatea echivalenta a gruparii paralel este: %f \n", Cp);
+
+
+	printf("\nIntroduceti valorile rezistentelor\n");
+	R1 = cit_val();
+	R2 = cit_val();
+
+	Rs = functia_1(R1, R2);
+	Rp = functia_2(R1, R2);
+
+	printf("Rezistenta echivalenta serie: %f \n", Rs);
+	printf("Rezistenta echivalenta paralel: %f \n", Rp);
+}
+
+int cit_val(void)
+{
+	int x;
+	printf("Introduceti o valoare intreaga: ");
+	scanf("%d", &x);
+	return x;
+}
+
+float functia_1(int x, int y)
+{
+	return (float)x + y;
+}
+
+float functia_2(int x, int y)
+{
+	return (float)(x*y) / (float)(x + y);
+}
+
+------------------------------
+
+/*lab5_Popa_Larisa-Ancuta_prob_6
+
+-se citesc de la tastatura numele a 2 studen?i ?i nota fiecaruia la programare
+-sa se afi?eze pe linii separate numele fiecarui student (câmp de afi?are cu dimensiunea 20, aliniat la dreapta, respectiv la stânga)
+-sa se afiseze media notelor lor, cu o precizie de 2 zecimale
+
+program C
+*/
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+
+float cit_nota(void); //citire valori (nota student)
+
+int main()
+{
+	char nume1[50], nume2[50];
+	float nota1, nota2;
+
+	printf("Introduceti numele studentului 1: ");
+	scanf("%s", nume1);
+	nota1 = cit_nota();
+
+	printf("Introduceti numele studentului 2: ");
+	scanf("%s", nume2);
+	nota2 = cit_nota();
+
+	printf("Student 1: %20s \n", nume1); //adisare dreapta
+	printf("Student 2: %-20s \n", nume2); //adisare stanga
+
+	float media = (nota1 + nota2) / 2;
+	printf("Media notelor celor doi studenti este: %0.2f \n", media);
+}
+
+float cit_nota(void)
+{
+	float x;
+	printf("Introduceti nota: ");
+	scanf("%f", &x);
+	return x;
+}
+
+------------------------------
+
+/* lab5_Popa_Larisa-Ancuta_prob_7
+
+-se citeste raza unui cerc(numar intreg)
+-afiseaza: lungimea cercului, aria discului(precizie 3 zecimale, camp de afisare cu dimensiunea 10)
+-PI constanta 
+
+program C
+*/
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <math.h>
+
+int cit_raza(void); //citire valoare raza (numar intreg)
+
+int main()
+{
+	int R;
+	R = cit_raza();
+
+	float Pi = 3.14159, L_cerc, A_disc;
+
+	L_cerc = 2 * Pi*R; //lungimea cercului
+	A_disc = Pi*pow(R, 2); //aria discului
+
+	printf("Lungimea cercului este: %10.3f \n",L_cerc);
+	printf("Aria cercului este: %10.3f \n", A_disc);
+}
+
+int cit_raza(void)
+{
+	int x;
+	printf("Introduceti valoarea razei: ");
+	scanf("%d", &x);
+	return x;
+}
+
+------------------------------
+
+/* lab5_Popa_Larisa-Ancuta_prob_8
+
+-se citesc de la tastatura ora plecarii unui tren din Cluj ?i ora la care ajunge la Bra?ov (ora ?i minute)
+-sa se afi?eze durata calatoriei (în ore ?i minute)
+
+program C
+*/
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+
+int cit_o(void); //citeste ora plecarii/sosirii
+int cit_m(void); //citeste minutul plecarii/sosirii
+int d_o(int x,int y); //calculeaza cate ore a durat calatoria
+int d_m(int x, int y); //calculeaza cate minute a durat calatoria
+
+int main()
+{
+	int ora_CJ, min_CJ, ora_BV, min_BV;
+	printf("Ora plecarii din Cluj\n");
+	ora_CJ = cit_o();
+	min_CJ = cit_m();
+
+	printf("\nOra sosirii in Brasov\n");
+	ora_BV = cit_o();
+	min_BV = cit_m();
+
+	int durata_o,durata_m;
+	durata_o = d_o(ora_CJ, ora_BV); //ore calatorie
+	durata_m = d_m(min_CJ, min_BV); //minute calatorie
+
+	if (durata_o == 0)
+		printf("\nCalatoria a durat %d minute.\n", durata_m);
+	else
+		printf("\nCalatoria a durat %d ore si %d minute.\n", durata_o, durata_m);
+}
+
+int cit_o(void)
+{
+	int x;
+	printf("Ora: ");
+	scanf("%d", &x);
+	return x;
+}
+
+int cit_m(void)
+{
+	int x;
+	printf("Minute: ");
+	scanf("%d", &x);
+	return x;
+}
+
+int d_o(int x,int y)
+{
+	int nr = 0;
+	while (x != y)
+	{
+		x++; nr++;
+		if (x == 24)
+			x = 1;
+	}
+
+	return nr;
+}
+
+int d_m(int x, int y)
+{
+	int nr = 0;
+	while (x != y)
+	{
+		x++; nr++;
+		if (x == 60)
+			x = 0;
+	}
+
+	return nr;
+}
+
+------------------------------
+
+/* lab5_Popa_Larisa-Ancuta_prob_9
+
+-v1,v2 vitezele a doua masini care se deplaseaza una spre cealalta
+-distanta dintre plecari d=100km
+-se afiseaza timpul dupa care se intalnesc(minute)
+
+program C
+*/
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int cit_val(void); // citeste valorile vitezelor
+float timp_intalnire(int x, int y, int z); //calculeaza timpul de intalnire
+
+int main()
+{
+	int v1, v2, d = 100, t;
+
+	printf("Viteza masina 1 \n");
+	v1 = cit_val();
+	printf("Viteza masina 2 \n");
+	v2 = cit_val();
+
+	t =(int)timp_intalnire(v1, v2, d);
+	printf("\nCele doua autoturisme se intalnesc in aproximativ %d minute.\n", t);
+}
+
+int cit_val(void)
+{
+	int x;
+	printf("Introduceti valoarea vitezei: ");
+	scanf("%d", &x);
+	return x;
+}
+
+float timp_intalnire(int x, int y, int z)
+{
+	int v;
+	float t_h, t_m;
+	v = x + y;
+	t_h = (float)z / v; //timpul exprimat in ore
+	t_m = t_h * 60; //conversia din ore in minute
+	return t_m;
+}

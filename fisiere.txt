@@ -1,0 +1,866 @@
+/* Lab13_Popa_Larisa-Ancuta_Prob_1
+
+-sa se scrie un program care citeste
+-afiseaza date întregi preluate dintr-un fisier text al carui nume este citit de la consola
+-creati in prealabil fisierul prin program
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+#define DIM 20
+
+void fisier(char[DIM]); //creare fisier
+
+int main()
+{
+	FILE *f;
+	int a;
+	char nume_fisier[DIM];
+
+	printf("Introduceti numele fisierului: ");
+	scanf("%s", nume_fisier);
+
+	fisier(nume_fisier);
+
+	f = fopen(nume_fisier, "r");
+
+	if (f == NULL)
+		printf("\nFisierul nu a putut fi deschis!");
+
+	printf("\nNumerele din fisier sunt urmatoarele: ");
+	while (fscanf(f, "%d", &a) != EOF)
+		printf(" %d ", a);
+
+	fclose(f);
+
+	return 0;
+}
+
+void fisier(char sir[DIM])
+{
+	FILE *f;
+	int n, a, i;
+
+	f = fopen(sir, "w");
+
+	if (f == NULL)
+		printf("\nFisierul nu a putut fi creat!");
+
+	printf("\nIntroduceti dimensiunea sirului: ");
+	scanf("%d", &n);
+
+	printf("\nIntroduceti numerele: \n");
+	for (i = 0;i<n;i++)
+	{
+		scanf("%d", &a);
+		fprintf(f, "%d ", a);
+	}
+
+	fclose(f);
+}
+
+------------------------------
+
+/* Lab13_Popa_Larisa-Ancuta_Prob_2
+
+-sa se scrie un program care citeste dintr-un fisier text 10 numere întregi (generat in prealabil prin program sau extern)
+-sa se scrie functiile care:
+    -aranjeaza crescator/descrescator sirul si afiseaza rezultatul
+    -numara câte elemente sunt pare si afiseaza rezultatul
+-adauga?i în fi?ierul original noile rezultate ob?inute
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+#define DIM 20
+#define MAX 10
+
+void fisier(char[DIM]);//creare fisier
+void ordonare(int*);//ordonare numere crescator
+int pare(int*);//returneaza numarul de numere pare
+
+int main()
+{
+	int val, tab[MAX], nr_p, i;
+
+	FILE *f;
+	char fis[DIM];
+
+	printf("Introduceti numele fisierului: ");
+	scanf("%s", fis);
+
+	fisier(fis);
+
+	f = fopen(fis, "r");
+
+	if (f == NULL)
+		printf("\nEroare la deschiderea fisierului!");
+
+
+	for (i = 0;i<10;i++)
+	{
+		fscanf(f, "%d", &val);
+		tab[i] = val;
+	}
+
+	ordonare(tab);
+
+	fclose(f);
+
+	f = fopen(fis, "a");
+
+	if (f == NULL)
+		printf("\nEroare la deschiderea fisierului!");
+
+	printf("\n\nSirul ordonat crescator :\n");
+	fprintf(f, "\n\nSirul ordonat crescator : \n");
+	for (i = 0;i<10;i++)
+	{
+		printf("%d ", tab[i]);
+		fprintf(f, "%d ", tab[i]);
+	}
+
+	nr_p = pare(tab);
+	printf("\n\nSunt %d numere pare.\n\n", nr_p);
+	fprintf(f, "\n\nSunt %d numere pare.", nr_p);
+
+	fclose(f);
+
+	return 0;
+}
+
+void fisier(char tab[DIM])
+{
+	FILE *f;
+	int val, i;
+
+	f = fopen(tab, "w+");
+
+	if (f == NULL)
+		printf("\nFisierul nu a putut fi creat!");
+
+	printf("\nIntroduceti numerele: \n");
+	for (i = 0;i<10;i++)
+	{
+		scanf("%d", &val);
+		fprintf(f, "%d ", val);
+	}
+
+	fclose(f);
+}
+
+void ordonare(int *p)
+{
+	int aux, i, j;
+
+	for (i = 0;i < 9;i++)
+	{
+		for (j = i + 1;j < 10;j++)
+		{
+			if (*(p + i) > *(p + j))
+			{
+				aux = *(p + i);
+				*(p + i) = *(p + j);
+				*(p + j) = aux;
+			}
+		}
+	}
+}
+
+int pare(int *p)
+{
+	int nr = 0, i;
+
+	for (i = 0;i<10;i++)
+	{
+		if (*(p + i) % 2 == 0) 
+			nr++;
+	}
+
+	return nr;
+}
+
+------------------------------
+
+/* Lab13_Popa_Larisa-Ancuta_Prob_3
+
+-scrieti un program care citeste de la consola n numere întregi pe care le scrie într-un fisier text cu numele citit de la tastatura
+-cititi apoi numerele din fisier
+-determinati media lor aritmetica, pe care o adaugati la sfârsitul fisierului si o afisati si pe ecran
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define DIM 20
+
+void fisier(int, char[DIM]); //creare si citire elemente fisier
+
+int main()
+{
+	int n, *p, i, nr, s = 0;
+	float med;
+
+	FILE *f;
+	char fis[DIM];
+
+	printf("Introduceti numele fisierului:");
+	scanf("%s", &fis);
+
+	printf("\nIntroduceti dimensiunea tabloului: ");
+	scanf("%d", &n);
+
+	fisier(n, fis);
+
+	f = fopen(fis, "r");
+	if (f == NULL)
+		printf("\nFisierul nu a putut fi deschis!\n\n");
+
+	for (i = 0; i < n; i++)
+	{
+		fscanf(f, "%d", &nr);
+		s += nr;
+	}
+	med = (float)s / n;
+
+	printf("\nMedia elementelor este: %0.2f\n\n", med);
+	fclose(f);
+
+	f = fopen(fis, "a");
+	if(f==NULL)
+		printf("\nFisierul nu a putut fi deschis!\n\n");
+	fprintf(f, "\nMedia elementelor este: %0.2f\n\n", med);
+
+	fclose(f);
+
+	return 0;
+}
+
+void fisier(int n, char fis[DIM])
+{
+	FILE *f;
+	int val, i;
+
+	f = fopen(fis, "w");
+
+	if (f == NULL)
+		printf("\nFisierul nu a putut fi creat!");
+
+	printf("\nIntroduceti elementele tabloului: \n");
+	for (i = 0;i<n;i++)
+	{
+		scanf("%d", &val);
+		fprintf(f, "%d ", val);
+
+	}
+
+	fclose(f);
+}
+
+------------------------------
+
+/* Lab13_Popa_Larisa-Ancuta_Prob_4
+
+-citeste de la tastatura un caracter apoi scrie acest caracter într-un fisier text pe n linii
+-câte n caractere pe fiecare linie
+-n citit de la consola
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+
+int main()
+{
+	int n, i;
+	char c;
+
+	FILE *f;
+	char fis[] = "caracter";
+
+	printf("Introduceti un caracter: ");
+	scanf("%c", &c);
+
+	printf("\nInreoduceti numarul de linii: ");
+	scanf("%d", &n);
+
+	f = fopen(fis, "w+");
+	if (f == NULL)
+		printf("\nFisierul nu a putut fi deschis!\n\n");
+
+	for (i = 0;i<n;i++)
+		fprintf(f, "%c\n", c);
+	fclose(f);
+
+	return 0;
+}
+
+------------------------------
+
+/* Lab13_Popa_Larisa-Ancuta_Prob_5
+
+-citeste un fisier text linie cu linie si îl afiseaza pe ecran
+-se va folosi un fisier existent din sistem sau se va genera in prealabil unul prin program
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define DIM 100
+
+int main()
+{
+	char text[DIM];
+
+	FILE *f;
+	char fis[] = "fisier.txt"; //fisierul exista
+
+	f = fopen(fis, "r");
+	if (f == NULL)
+		printf("\nFisierul nu a putut fi deschis!\n\n");
+
+	while (fgets(text, DIM, f) != NULL)
+		puts(text);
+	fclose(f);
+
+	return 0;
+}
+
+------------------------------
+
+
+
+------------------------------
+
+/* Lab13_Popa_Larisa-Ancuta_Prob_7
+
+-citeste caracter cu caracter un fisier text si converteste primul caracter al fiecarui cuvânt în majuscula
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+
+#define DIM 100
+
+void conv_maj(char*); //converteste primul caracter al fiecarui cuvant in majuscula
+
+int main()
+{
+	int i;
+	FILE *f;
+	char fis[] = "fisier.txt", text[DIM];
+
+	f = fopen(fis, "r");
+	if (f == NULL)
+		printf("\nFisierul nu a putut fi deschis!\n\n");
+
+	while (fgets(text, DIM, f) != NULL)
+	{
+		conv_maj(text);
+		puts(text);
+	}
+	fclose(f);
+	return 0;
+}
+
+void conv_maj(char *p)
+{
+	int i;
+
+	*p -= 32;
+	for (i = 0;i < strlen(p);i++)
+	{
+		if (*(p + i) != ' ' && *(p + i - 1) == ' ')
+			*(p + i) -= 32;
+	}
+}
+
+------------------------------
+
+/* Lab13_Popa_Larisa-Ancuta_Prob_8
+
+-scrieti un program care citeste valori reale dintr-un fisier creat în prealabil
+-scrie într-un alt fisier partea întreaga a numerelor pozitive citite
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define DIM 20
+#define DIM2 100
+
+int main()
+{  
+	int i, n;
+	float tab[DIM2], val;
+	char intrare[DIM] = "intrare.txt", iesire[DIM] = "iesire.txt";
+
+	FILE *f1, *f2;
+
+	f1 = fopen(intrare, "r");
+	if (f1 == NULL)
+		printf("\nFisierul nu a putut fi deschis!\n\n");
+
+	fscanf(f1, "%d", &n);
+	for (i = 0;i<n;i++)
+	{
+		fscanf(f1, "%f", &val);
+		tab[i] = val;
+	}
+	fclose(f1);
+
+	f2 = fopen(iesire, "a");
+	if (f2 == NULL)
+		printf("\nFisierul nu a putut fi deschis!\n\n");
+
+	fprintf(f2, "Partea intreaga a numerelor din fisierul intrare: \n");
+	for (i = 0;i < n;i++)
+		fprintf(f2, "%d\n", (int)tab[i]);
+	fclose(f2);
+
+	return 0;
+}
+
+------------------------------
+
+/* Lab13_Popa_Larisa-Ancuta_Prob_9
+
+Sa se scrie o aplicatie care:
+- citeste de la consola un numar întreg n;
+- citeste de la consola, cu o functie, “n” numere reale, într-un tablou unidimensional, alocat dinamic în memorie;
+- scrie aceste valori din tablou într-un fisier binar, al carui nume este citit tot de la consola;
+- citeste apoi continutul fisierului si afiseaza numerele din 3 în 3 pozitii, folosind functii specifice accesului aleator la fisiere
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <malloc.h>
+
+#define DIM 20
+
+void citire(int, float*); //citire elemente
+
+int main()
+{
+	int n, i;
+	float *p, val;
+
+	FILE *f;
+	char fis[DIM];
+
+	printf("Introduceti numarul de elemente: ");
+	scanf("%d", &n);
+
+	if (p = (float *)malloc(n * sizeof(float)))
+		citire(n, p);
+	else
+		printf("\nAlocare nereusita!");
+
+	printf("\nIntroduceti numele fisierului: ");
+	scanf("%s", &fis);
+
+	if ((f = fopen(fis, "w+b")) == NULL)
+		printf("\nFisierul nu a putut fi accesat!\n\n");
+
+	for (i = 0;i < n;i++)
+		fwrite(&p[i], sizeof(float), 1, f);
+	fclose(f);
+
+	if ((f = fopen(fis, "rb")) == NULL)
+		printf("\nFisierul nu a putut fi accesat!\n\n");
+
+	printf("\nNumerele din fisier din 3 in 3 pozitii: \n");
+	while (fread(&val, sizeof(float), 1, f) == 1)
+	{
+		printf("%6.2lf", val);
+		fseek(f, 2 * sizeof(float), SEEK_CUR);
+
+	}
+	printf("\n\n");
+	fclose(f);
+
+	return 0;
+}
+
+void citire(int n,float *p)
+{
+	int i;
+
+	printf("\nIntroduceti elementele tabloului: \n");
+	for (i = 0;i < n;i++)
+		scanf("%f", (p + i));
+}
+
+------------------------------
+
+/* Lab13_Popa_Larisa-Ancuta_Prob_10
+
+Sa se scrie o aplicatie care:
+- defineste o structura numita Student, cu câmpurile numele, prenumele, grupa, media;
+- citeste de la consola un numar întreg n (numarul studentilor)
+- pentru fiecare înregistrare de tip student, citeste cu o functie datele aferente si le scrie într-un fisier, cu numele preluat de la consola;
+- citeste continutul fisierului si afiseaza studentii ce au media mai mare decât o valoare citita de la cons
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <malloc.h>
+
+#define DIM 20
+
+void citire(struct student*); //citeste datele studentului
+void medie(struct student*, FILE *); //afiseaza studentii cu media mai mare decat o medie citita de la tastatura
+
+struct student
+{
+	char nume[DIM];
+	char prenume[DIM];
+	int grupa;
+	float media;
+}*p;
+
+int n;
+
+int main()
+{
+	int i;
+
+	FILE *f;
+	char fis[DIM];
+
+	printf("Introduceti numarul de studenti: ");
+	scanf("%d", &n);
+
+	if (p = (struct student*)malloc(n * sizeof(struct student)))
+		citire(p);
+	else
+		printf("\nAlocare nereusita!\n\n");
+
+	printf("\nIntroduceti numele fisierului : ");
+	scanf("%s", fis);
+
+	f = fopen(fis, "w+b");
+	if (f == NULL)
+		printf("\nFisierul nu a putut fi creat!\n\n");
+
+	for (i = 0;i<n;i++)
+		fwrite((p + i), sizeof(struct student), 1, f);
+	fclose(f);
+
+	f = fopen(fis, "rb");
+	if(f==NULL)
+		printf("\nFisierul nu a putut fi accesat!\n\n");
+
+	medie(p, f);
+
+	if (p)
+		free(p);
+	fclose(f);
+
+	return 0;
+}
+
+void citire(struct student *p)
+{
+	int i;
+
+	for (i = 0;i<n;i++)
+	{
+		printf("\nStudentul %d\n", i);
+
+		printf("  Nume: ");
+		scanf("%s", (p + i)->nume);
+		printf("  Prenume: ");
+		scanf("%s", (p + i)->prenume);
+		printf("  Grupa: ");
+		scanf("%d", &(p + i)->grupa);
+		printf("  Medie: ");
+		scanf("%f", &(p + i)->media);
+
+	}
+}
+
+void medie(struct student *p, FILE *f)
+{
+	int i;
+	float med_min;
+
+	printf("\nIntroduceti o medie minima : ");
+	scanf("%f", &med_min);
+
+	printf("\nStudentii cu media mai mare decat %0.2f sunt: \n", med_min);
+	for (i = 0;i<n;i++)
+	{
+		fread((p + i), sizeof(struct student), 1, f);
+		if ((p + i)->media > med_min)
+		{
+			printf("Nume si prenume: %s %s", (p + i)->nume, (p + i)->prenume);
+			printf("\nGrupa : %d", (p + i)->grupa);
+			printf("\nMedia: %0.2f\n\n", (p + i)->media);
+		}
+	}
+}
+
+------------------------------
+
+/* Lab13_Popa_Larisa-Ancuta_Prob_11
+
+Sa se scrie o aplicatie care:
+- citeste de la consola un numar întreg n
+- citeste de la consola, cu o functie, n numere întregi, memorându-le într-un tablou unidimensional, alocat dinamic
+- scrie valorile din acest tablou într-un fisier binar, al carui nume este citit de la consola
+- citeste continutul fisierului si afiseaza continutul si offsetul pozitilor pe care s-au gasit numere pare
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <malloc.h>
+#include <stdlib.h>
+
+#define DIM 30
+
+void citire(int); //citeste elementele tabloului
+
+int *p;
+
+int main()
+{
+	int n, i, val;
+	fpos_t poz;
+
+	FILE *f;
+	char fis[DIM];
+
+	printf("Introduceti dimensiunea tabloului: ");
+	scanf("%d", &n);
+
+	if (p = (int *)malloc(n * sizeof(int)))
+		citire(n);
+	else
+		printf("\nEroare alocare!\n");
+
+	printf("\nIntrodueti numele fisierului: ");
+	scanf("%s", &fis);
+
+	f = fopen(fis, "wb");
+	if (f == NULL)
+		printf("\nFisierul nu a putut fi accesat!\n\n");
+
+	for(i=0;i<n;i++)
+		fwrite(p + i, sizeof(int), 1, f);
+	fclose(f);
+
+	f = fopen(fis, "rb");
+	if (f == NULL)
+		printf("\nFisierul nu a putut fi accesat!\n\n");
+
+	while (fread(&val, sizeof(int), 1, f))
+	{
+		fgetpos(f, &poz);
+		if (val % 2 == 0)
+			printf("\nNumarul %d are offset-ul: %d", val, poz);
+	}
+	printf("\n\n");
+	fclose(f);
+
+	if (p)
+		free(p);
+	
+	return 0;
+}
+
+void citire(int n)
+{
+	int i;
+
+	printf("\nIntroduceti elementele tabloului: \n");
+	for (i = 0;i < n;i++)
+		scanf("%d", (p + i));
+}
+
+------------------------------
+
+
+
+------------------------------
+
+/* Lab13_Popa_Larisa-Ancuta_Prob_13
+
+Definiti o structura prajitura, cu campurile nume, nr_bucati, pret.
+- cititi de la tastatura datele pentru un numar n de prajituri si salvati aceste date intr-un fisier binar.
+- cititi apoi inregistrarile din fisier si afisati toate informatiile despre prajitura cea mai ieftina.
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <malloc.h>
+#include <string.h>
+
+#define DIM 20
+
+void citire(int); //citire date prajitura
+void min_pret(int, FILE *); //determina si afiseaza prajitura cea mai ieftina
+
+struct prajitura
+{
+	char nume[DIM];
+	int nr_bucati;
+	float pret;
+}*p;
+
+int main()
+{
+	int n, i;
+
+	FILE *f;
+	char fis[] = "prajituri_bin";
+
+	f = fopen(fis, "wb");
+	if (f==NULL)
+		printf("\nFisierul nu a putut fi deschis!\n\n");
+
+	printf("Introduceti numarul de prajituri: ");
+	scanf("%d", &n);
+
+	if (p = (struct prajitura *)malloc(n * sizeof(struct prajitura)))
+		citire(n);
+	else
+		printf("\nEroare alocare!\n\n");
+
+	for(i=0;i<n;i++)
+		fwrite(p + i, sizeof(struct prajitura), 1, f);
+	fclose(f);
+
+	f = fopen(fis, "rb");
+	if (f == NULL)
+		printf("\nFisierul nu a putut fi accesat!\n\n");
+
+	min_pret(n, f);
+
+	fclose(f);
+
+	return 0;
+}
+
+void citire(int n)
+{
+	int i;
+
+	for (i = 0;i < n;i++)
+	{
+		printf("\nPrajitura %d\n", i);
+
+		printf("   Nume: ");
+		scanf("%s", (p + i)->nume);
+		printf("   Bucati: ");
+		scanf("%d", &(p + i)->nr_bucati);
+		printf("   Pret: ");
+		scanf("%f", &(p + i)->pret);
+	}
+}
+
+void min_pret(int n, FILE *f)
+{
+	int i;
+	struct prajitura min, praji;
+
+	p = &praji;
+
+	fread(&min, sizeof(struct prajitura), 1, f);
+	for (i = 1; i < n; i++)
+	{
+		fread(p, sizeof(struct prajitura), 1, f);
+		if (praji.pret < min.pret)
+		{
+			strcpy(min.nume, praji.nume);
+			min.pret = praji.pret;
+			min.nr_bucati = praji.nr_bucati;
+		}
+	}
+
+	printf("\nPrajitura cu cel mai mic pret este:");
+	printf("\nNume: %s", min.nume);
+	printf("\nBucati: %d", min.nr_bucati);
+	printf("\nPret: %0.2f\n\n", min.pret);
+}
+
+------------------------------
+
+/* Lab13_Popa_Larisa-Ancuta_Prob_14
+
+-scrieti intr-un fisier binar câteva numere intregi, citite de la tastatura
+-cititi apoi numerele de pe pozitii impare si afisati pentru fiecare, daca este valoare para sau impara
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <malloc.h>
+
+void citire(int, int*); //citeste numerele intregi
+
+int main()
+{
+	int n, *p, i, nr;
+
+	FILE *f;
+	char fisier[] = "Nr_bin";
+
+	if ((f = fopen(fisier, "w+b")) == NULL)
+		printf("\nFisierul nu a putut fi deschis!\n\n");
+
+	printf("Introduceti dimensiunea tabloului: ");
+	scanf("%d", &n);
+
+	if (!(p = (int *)malloc(n * sizeof(int))))
+		printf("\nEroare alocare!\n\n");
+	citire(n, p);
+
+	for (i = 0;i<n;i++)
+		fwrite(&p[i], sizeof(int), 1, f);
+	fclose(f);
+
+	if ((f = fopen(fisier, "rb")) == NULL)
+		printf("\nFisierul nu a putut fi deschis!\n\n");
+
+	for (i = 0; i < n; i++)
+	{
+		fread(&nr, sizeof(int), 1, f);
+		if (i % 2 != 0)
+		{
+			if (nr % 2 == 0)
+				printf("\n%d - valoare para", nr);
+			else printf("\n%d - valoare impara", nr);
+		}
+		printf("\n\n");
+	}
+
+	fclose(f);
+
+	return 0;
+}
+
+void citire(int n, int *p)
+{
+	int i;
+
+	printf("Introduceti cele %d numere: \n", n);
+	for (i = 0;i<n;i++)
+		scanf("%d", (p + i));
+}

@@ -1,0 +1,914 @@
+/* Lab12_Popa_Larisa-Ancuta_Prob_1
+
+-o structura numita Student, avand campurile {nume, prenume, tara de origine, grupa, anul nasterii
+-sa determine numarul de studenti straini din grupa (grupa de MAX studenti)
+-sa afiseze toate datele acestora
+-datele pentru studentii din grupa se citesc de la intrarea standard, pâna la întâlnirea numelui AAA
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <malloc.h>
+#include <string.h>
+
+#define DIM 20
+#define MAX 100
+
+void citire(struct student*); //citire date
+void nr_straini(struct student*, int, int); //determinare nr de studenti straini
+void afisare(struct student*); //afisare date
+
+struct student
+{
+	char nume[DIM];
+	char prenume[DIM];
+	char tara[DIM];
+	int grupa;
+	int anul_nasterii;
+
+};
+
+int main()
+{
+	int  nr = 0, grupa, ok = 0, n;
+	struct student *p;
+
+	printf("Introduceti numarul total de studenti: ");
+	scanf("%d", &n);
+
+	if ((p = (struct student *)malloc(nr * sizeof(struct student *))))
+	{
+		do {
+			if (ok == 0)
+			{
+				printf("\n Studentul %d: \n", nr);
+				citire(&p[nr]);
+
+				if (!strcmp(p[nr].nume, "AAA"))
+				{
+					ok = 1;
+					nr--;
+				}
+				nr++;
+			}
+		} while (ok == 0);
+	}
+	else
+		printf("\nEroare alocare!\n\n");
+
+	printf("\nIntroduceti grupa: ");
+	scanf("%d", &grupa);
+
+	nr_straini(p, n, grupa);
+
+	if (p)
+		free(p);
+
+	return 0;
+}
+
+void citire(struct student *p)
+{
+	printf("Nume: ");
+	scanf("%s", p->nume);
+
+	printf("Prenume: ");
+	scanf("%s", p->prenume);
+
+	printf("Tara de origine: ");
+	scanf("%s", p->tara);
+
+	printf("Grupa: ");
+	scanf("%d", &p->grupa);
+
+	printf("Anul nasterii: ");
+	scanf("%d", &p->anul_nasterii);
+}
+
+void nr_straini(struct student *p, int n,int grupa)
+{
+	int i, nr = 0;
+
+	printf("\nStudentii straini din grupa %d sunt :", grupa);
+
+	for (i = 0;i<n;i++)
+	{
+		if (((p + i)->grupa == grupa) && (strcmp("RO", (p + i)->tara) != 0))
+		{
+			nr++;
+			afisare(p + i);
+		}
+	}
+
+	printf("\n\nNumarul de studenti straini este: %d\n\n", nr);
+}
+
+void afisare(struct student *p)
+{
+	printf("\nNume: %s ", p->nume);
+	printf("\nPrenume: %s", p->prenume);
+	printf("\nTara de origine: %s", p->tara);
+	printf("\nGrupa: %d", p->grupa);
+	printf("\nAnul nasterii: %d", p->anul_nasterii);
+	printf("\n");
+}
+
+------------------------------
+
+/* Lab12_Popa_Larisa-Ancuta_Prob_2
+
+-folosind câte o functie, se transfera ca parametru o variabila de tip structura de date prin valoare si respectiv prin adresa, folosind pointeri
+-in functia main( ) initializati câmpurile structurii cu date citite de la tastatura
+-in ambele functii afisati datele din structura folosind un mesaj adecvat
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define DIM 20
+#define DIM2 100
+
+void citire(struct student*); //citire date studenti
+void afisare_1(struct student); //afisare cu parametru variabile
+void afisare_2(struct student*); //afisare cu ajutorul pointerilor
+
+struct student
+{
+	char nume[DIM];
+	char prenume[DIM];
+	float medie;
+
+};
+
+int n;
+
+void main()
+{
+	int i;
+	struct student st, stud[DIM2], *p = &stud[0];
+
+	printf("Introduceti numarul de studenti: ");
+	scanf("%d", &n);
+
+	citire(p);
+
+	printf("\nStudentii sunt afisati folosind transferul structurii prin valoare");
+	for (i = 0;i<n;i++)
+		afisare_1(stud[i]);
+
+	printf("\n\nStudentii sunt afisati folosind transferul structurii prin adresa");
+	for (i = 0;i<n;i++)
+		afisare_2(p + i);
+
+	printf("\n\n");
+}
+
+void citire(struct student *p)
+{
+	int i;
+
+	for (i = 0;i<n;i++)
+	{
+		printf("\n");
+
+		printf("Nume: ");
+		scanf("%s", (p + i)->nume);
+
+		printf("Prenume: ");
+		scanf("%s", (p + i)->prenume);
+
+		printf("Medie: ");
+		scanf("%f", &(p + i)->medie);
+	}
+}
+
+void afisare_1(struct student st)
+{
+	printf("\nNume si Prenume: %s %s ", st.nume, st.prenume);
+	printf("\nMedie: %0.2f", st.medie);
+}
+
+void afisare_2(struct student *p)
+{
+	printf("\nNume si Prenume: %s %s ", p->nume, p->prenume);
+	printf("\nMedie: %0.2f", p->medie);
+}
+
+------------------------------
+
+/* Lab12_Popa_Larisa-Ancuta_Prob_3
+
+-o functie returneaza o structura de date adecvata
+-in acest fel vor fi returnate mai multe valori
+-afisati rezultatul, valorile initiale transferate functiei (puteti realiza orice operatie în cadrul acelei functii), cu mesaje adecvate
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+struct math operatii(int, int);
+
+struct math
+{
+	int suma;
+	int diferenta;
+	int inmultire;
+	float impartire;
+}x;
+
+int main()
+{
+	int a, b;
+
+	printf("Introduceti doua numere intregi: \n");
+	scanf("%d", &a);
+	scanf("%d", &b);
+
+	x = operatii(a, b);
+
+	printf("\nSuma celor doua numere este : %d", x.suma);
+	printf("\nDiferenta celor doua numere este : %d", x.diferenta);
+	printf("\nProdusul celor doua numere este : %d", x.inmultire);
+	printf("\nCatul celor doua numere este : %0.2f \n\n", x.impartire);
+
+	return 0;
+}
+
+struct math operatii(int a, int b)
+{
+	x.suma = a + b;
+	
+	x.diferenta = a - b;
+
+	x.inmultire = a*b;
+
+	x.impartire = (float)a / b;
+
+	return x;
+}
+
+------------------------------
+
+/* Lab12_Popa_Larisa-Ancuta_Prob_4
+
+-utilizând o structura de tip Angajat
+-sa afiseze toate datele persoanelor cu ocupatia inginer dintr-o întreprindere (nume, prenume, ocupatia, data nasterii, sectia în care lucreaza)
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+
+#define DIM 20
+#define DIM2 100
+
+void citire(struct angajat*); //citire date angajati
+void afisare(struct angajat*); //afisare date ingineri
+
+struct data_calend
+{
+	int luna;
+	int ziua;
+	int an;
+
+};
+
+struct angajat
+{
+	char nume[DIM];
+	char prenume[DIM];
+	char ocupatie[DIM];
+	char sectie[DIM];
+	struct data_calend data_nasterii;
+
+}ang[DIM2], *p = &ang[0];
+
+int n;
+
+int main()
+{
+	printf("Introduceti numarul de angajati: ");
+	scanf("%d", &n);
+
+	citire(p);
+
+	afisare(p);
+
+	return 0;
+}
+
+void citire(struct angajat*)
+{
+	int i;
+
+	printf("\nIntroduceti datele angajatilor: ");
+	for(i=0;i<n;i++)
+	{
+		printf("\nNume: ");
+		scanf("%s", (p+i)->nume);
+
+		printf("Prenume: ");
+		scanf("%s", (p + i)->prenume);
+
+		printf("Ocupatie: ");
+		scanf("%s", (p + i)->ocupatie);
+
+		printf("Sectie: ");
+		scanf("%s", (p + i)->sectie);
+
+		printf("Data nasterii:\n");
+		printf("  Ziua: ");
+		scanf("%d", &(p + i)->data_nasterii.ziua);
+		printf("  Luna: ");
+		scanf("%d", &(p + i)->data_nasterii.luna);
+		printf("  Anul: ");
+		scanf("%d", &(p + i)->data_nasterii.an);
+	}
+}
+
+void afisare(struct angajat*)
+{
+	int i;
+	char ing[] = "inginer";
+
+	printf("\n\nAngajatii ingineri :");
+	for (i = 0;i<n;i++)
+	{
+		if (strcmp((p + i)->ocupatie, ing) == 0)
+		{
+			printf("\nNume: %s ", (p + i)->nume);
+			printf("\nPrenumele: %s", (p + i)->prenume);
+			printf("\nOcupatie: %s", (p + i)->ocupatie);
+			printf("\nSectie: %s", (p + i)->sectie);
+			printf("\nData nasterii: %d/%d/%d", (p + i)->data_nasterii.ziua, (p + i)->data_nasterii.luna, (p + i)->data_nasterii.an);
+			printf("\n");
+		}
+	}
+	printf("\n\n");
+}
+
+------------------------------
+
+
+
+------------------------------
+
+/* Lab12_Popa_Larisa-Ancuta_Prob_6
+
+-sa se scrie un program care afiseaza numele, prenumele si media studentului cu cele mai bune rezultate din grupa în urma sesiunii de iarna
+-folositi pentru aceasta un tablou de structuri, de un tip numit Student, alocarea dinamica
+-o functie care returneaza înregistrarea student cu media cea mai mare
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <malloc.h>
+
+#define DIM 20
+#define DIM2 100
+
+void citire(struct student*); //citeste datele studentului
+student *medie_max(struct student*); //determina studentul cu media maxima
+void afisare(struct student*); //afiseaza datele studentului
+
+struct student
+{
+	char nume[DIM];
+	char prenume[DIM];
+	float medie;
+
+}*p;
+
+int n;
+
+int main()
+{
+	int i;
+
+	printf("Introduceti numarul de studenti: ");
+	scanf("%d", &n);
+
+	if (p = (struct student *)malloc(n * sizeof(struct student)))
+	{
+		citire(p);
+
+		printf("\nStudentul cu media cea mai mare este: ");
+
+		struct student *s = medie_max(p);
+
+		afisare(s);
+	}
+	else
+		printf("\nAlocare nereusita!\n\n");
+
+	if (p)
+		free(p);
+
+	return 0;
+}
+
+void citire(struct student*)
+{
+	int i;
+
+	printf("\nIntroduceti datele studentilor: ");
+	for (i = 0;i < n;i++)
+	{
+		printf("\nNumele: ");
+		scanf("%s", (p + i)->nume);
+
+		printf("Prenumele: ");
+		scanf("%s", (p + i)->prenume);
+
+		printf("Medie: ");
+		scanf("%f", &(p + i)->medie);
+
+	}
+}
+
+student* medie_max(struct student*)
+{
+	int i;
+	float max = 0;
+	struct student *st = NULL;
+
+	for (i = 0;i < n;i++)
+	{
+		if ((p + i)->medie > max)
+		{
+			max = (p + i)->medie;
+			st = p + i;
+		}
+	}
+
+	return st;
+}
+
+void afisare(struct student*)
+{
+	printf("\nNume: %s ", p->nume);
+	printf("\nPrenume: %s", p->prenume);
+	printf("\nMedie: %6.2f", p->medie);
+	printf("\n");
+}
+
+------------------------------
+
+/* Lab12_Popa_Larisa-Ancuta_Prob_7
+
+-aloca dinamic memorie pentru datele a n studenti, (nume, prenume si gen)
+-citeste datele pentru fiecare din acestia
+-afiseaza numarul studentelor
+-elibereaza memoria alocata.
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <malloc.h>
+
+#define DIM 20
+#define DIM2 100
+
+void citire(struct student*); //citeste datele studentilor
+void nr_studente(struct student*); //determina si afiseaza numarul de studente
+
+struct student
+{
+	char nume[DIM];
+	char prenume[DIM];
+	char gen[DIM]; //masculin sau feminin
+
+}st[DIM2], *p = &st[0];
+
+int n;
+
+int main()
+{
+	printf("Inreoduceti numarul de studenti: ");
+	scanf("%d", &n);
+
+	if (p = (struct student *)malloc(n * sizeof(struct student)))
+	{
+		citire(p);
+
+		nr_studente(p);
+	}
+	else
+		printf("Alocare nereusita!");
+
+	if (p)
+		free(p);
+
+	return 0;
+}
+
+void citire(struct student*)
+{
+	int i;
+
+	for (i = 0;i < n;i++)
+	{
+		printf("\nNume: ");
+		scanf("%s", (p + i)->nume);
+
+		printf("Prenume: ");
+		scanf("%s", (p + i)->prenume);
+
+		printf("Gen: ");
+		scanf("%s", (p + i)->gen);
+	}
+}
+
+
+void nr_studente(struct student*)
+{
+	int i, nr = 0;
+	char studenta[] = "feminin";
+
+	for (i = 0;i < n;i++)
+	{
+		if ((strcmp((p + i)->gen, studenta) == 0))
+			nr++;
+	}
+
+	if (nr != 0)
+	{
+		if (nr == 1)
+			printf("\nEste o singura studenta. \n\n");
+		else
+			printf("\nSunt %d de studente.\n\n", nr);
+	}
+	else
+		printf("\nNu exista nicio studenta!\n\n");
+}
+
+------------------------------
+
+/* Lab12_Popa_Larisa-Ancuta_Prob_8
+
+-declarati un nou tip de date O_struct, care sa contina o variabila de tip întreg, una de tip caracter si un sir de 256 de caractere
+-definiti in main( ) o variabila statica de tip O_struct, careia sa-i initializati câmpurile cu date citite de la intrarea standard
+-declarati apoi un pointer de tip O_struct, numit po_struct, care va fi definit prin alocarea dinamica a unei zone de memorie care 
+   sa contina un articol de tip O_struct
+-initializati câmpurile structurii de date folosind pointerul po_struct
+-afisati toate campurile
+-eliberati zona de memorie alocata
+
+Program C++ */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <string.h>
+using namespace std;
+
+#define DIM 256
+
+struct O_struct
+{
+	int intreg;
+	char caracter;
+	char sir[DIM];
+};
+
+int main()
+{
+	O_struct var, *po_struct;
+	
+	cout << "Introduceti un nr. intreg: ";
+	cin >> var.intreg;
+
+	cout << "Introduceti un caracter: ";
+	cin >> var.caracter;
+
+	cout << "Introduceti un sir de caractere: ";
+	cin >> var.sir;
+
+	if (po_struct = new struct O_struct[1])
+	{
+		cout << "\nIntroduceti un nr. intreg: ";
+		cin >> po_struct->intreg;
+
+		cout << "Introduceti un caracter: ";
+		cin >> po_struct->caracter;
+
+		cout << "Introduceti un sir de caractere: ";
+		cin >> po_struct->sir;
+
+
+		cout << "\nNumarul intreg este: " << po_struct->intreg;
+		cout << "\nCaracterul este: " << po_struct->caracter;
+		cout << "\nSirul de caractere este: " << po_struct->sir << endl << endl;
+
+	}
+	else
+		cout << "Alocare nereusita!\n";
+
+	delete po_struct;
+
+	return 0;
+}
+
+------------------------------
+
+/* Lab12_Popa_Larisa-Ancuta_Prob_9
+
+-aloca dinamic memorie pentru memorarea datelor a n produse
+-o structura Produs, cu câmpurile denumire, pret, cantitate
+-citeste datele pentru fiecare dintre produse
+-afiseaza produsul din care avem cel mai mult pe stoc
+-in final va elibera memoria alocata
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <malloc.h>
+
+#define DIM 100
+
+void citire(struct produs*); //citire date produs
+int maxim_stoc(struct produs*); //returneaza stocul maxim
+void afisare(struct produs*); //afiseaza datele produselor cu stocul maxim
+
+struct produs
+{
+	char denumire[DIM];
+	float pret;
+	int cantitate;
+
+}prod[DIM], *p = &prod[0];
+
+int n;
+
+int main()
+{
+	printf("Introduceti numarul de produse: ");
+	scanf("%d", &n);
+
+	if (p = (struct produs*)malloc(n * sizeof(struct produs)))
+	{
+		citire(p);
+
+		afisare(p);
+	}
+	else
+		printf("\nAlocare nereusita!");
+
+	if (p)
+		free(p);
+
+	return 0;
+}
+
+void citire(struct produs*)
+{
+	int i;
+	printf("\nIntroduceti elementele tabloului:");
+
+	for (i = 0;i < n;i++)
+	{
+		printf("\nDenumirea produsului: ");
+		scanf("%s", (p+i)->denumire);
+
+		printf("Pret: ");
+		scanf("%f", &(p+i)->pret);
+
+		printf("Cantitate: ");
+		scanf("%d", &(p+i)->cantitate);
+	}
+}
+
+int maxim_stoc(struct produs*)
+{
+	int i, max = 0;
+
+	for (i = 0;i < n;i++)
+	{
+		if ((p + i)->cantitate > max)
+			max = (p + i)->cantitate;
+	}
+
+	return max;
+}
+
+void afisare(struct produs*)
+{
+	int i;
+
+	printf("\nProdusele care exista cel mai mult pe stoc sunt:");
+
+	for (i = 0;i < n;i++)
+	{
+		if ((p + i)->cantitate == maxim_stoc(p))
+		{
+			printf("\nDenumirea produsului : %s ", (p+i)->denumire);
+			printf("\nPretul produsului: %0.2f", (p+i)->pret);
+			printf("\nCantitatea produsului: %d", (p+i)->cantitate);
+			printf("\n");
+		}
+	}
+	printf("\n");
+}
+
+------------------------------
+
+/* Lab12_Popa_Larisa-Ancuta_Prob_10
+
+-sa se defineasca o structura cu numele Masina
+-are câmpurile producator, anul fabrictiei, capacitatea_cilindrica ?i culoare
+
+-sa se aloce dinamic memorie pentru n date de tip Masina si sa se citeasca informatiile pentru acestea
+-sa se afiseze inregistrarile masinilor de culoare rosie, fabricate dupa anul 2010
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <malloc.h>
+
+#define DIM 100
+
+void citire(struct masina*); //citire date
+void afisare(struct masina*); //verificare si afisare date
+
+struct masina
+{
+	char producator[DIM];
+	int anul_fabricatiei;
+	int capacitatea_cilindrica;
+	char culoare[DIM];
+
+}m[DIM], *p = &m[0];
+
+int n;
+char *verif = "rosu";
+
+int main()
+{
+	printf("Introduceti numarul de masini: ");
+	scanf("%d", &n);
+
+	if (p = (struct masina*)malloc(n * sizeof(struct masina)))
+	{
+		citire(p);
+
+		afisare(p);
+	}
+	else
+		printf("\nAlocare nereusita!\n\n");
+
+	return 0;
+}
+
+void citire(struct masina*)
+{
+	int i;
+
+	printf("\nIntroduceti datele masinilor :");
+	for (i = 0;i < n;i++)
+	{
+		printf("\nProducator: ");
+		scanf("%s", (p+i)->producator);
+
+		printf("Anul fabricatiei: ");
+		scanf("%d", &(p+i)->anul_fabricatiei);
+
+		printf("Capacitatea cilindrica: ");
+		scanf("%d", &(p+i)->capacitatea_cilindrica);
+
+		printf("Culoare: ");
+		scanf("%s", (p+i)->culoare);
+	}
+}
+
+void afisare(struct masina*)
+{
+	int i;
+
+	printf("\nMasinile de culoare rosie, fabricate dupa 2010 sunt:");
+	for (i = 0;i<n;i++)
+	{
+		if ((strcmp((p + i)->culoare, verif) == 0) && ((p + i)->anul_fabricatiei > 2010))
+		{
+			printf("\nProducator: %s", (p+i)->producator);
+			printf("\nAnul fabricatiei: %d", (p+i)->anul_fabricatiei);
+			printf("\nCapacitatea cilindrica: %d", (p+i)->capacitatea_cilindrica);
+			printf("\nCuloarea: %s", (p+i)->culoare);
+			printf("\n");
+		}
+	}
+	printf("\n");
+}
+
+------------------------------
+
+/* Lab12_Popa_Larisa-Ancuta_Prob_11
+
+-folosind structura de date union denumita grup compusa din diferite câmpuri (int, long, double, char etc.)
+-scrie?i o aplicatie C/C++ care va initializa un element de tipul grup de la tastatura
+-este posibil sa afisam în acelasi timp toate câmpurile folosind pointeri sau nume calificate? 
+-afisati ceea ce este posibil si dimensiunea elementului union
+-realizati aceeasi operatie considerând o simpla structura struct
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+int main()
+{
+	union {
+		int intreg;
+		long var;
+		double real;
+		char sir[11];
+
+	} grup;
+
+	grup.intreg = 3;
+	cout << "\nValoare de tip intreg este: " << grup.intreg << endl;
+
+	grup.var = 653523244224;
+	cout << "\nValoare de tip long este: " << grup.var << endl;
+
+	grup.real = 2.75;
+	cout << "\nValoare de tip double este: " << grup.real << endl;
+
+	strcpy(grup.sir, "programare");
+	cout << "\nValoarea elementului de tip char este: " << grup.sir << endl << endl;
+
+	cout << "Dimensiunea elementului union este: " << sizeof(grup) << endl << endl;;
+
+	return 0;
+}
+
+------------------------------
+
+/* Lab12_Popa_Larisa-Ancuta_Prob_12
+
+-definiti o data de tip enumerare enum Lumina_Alba care va avea în componenta culorile de baza 
+      (Rosu, Portocaliu, Galben, Verde, Albastru, Indigo si Violet)
+-initializati câteva variabile de tip Lumina_Alba
+-urmariti sa generati culori secundare cu ajutorul operatiilor secifice enum prin combinatii ale culorilor de baza
+-traduceti printr-un mecanism folosind enumerarile, numele culorilor în limba Franceza, Engleza sau Germana
+-afisati toate culorile, mentionând numele initial, noul nume si valoarea asociata
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+enum Lumina_Alba { Rosu = 1, Portocaliu = 2, Galben = 3, Verde = 4, Albastru = 5, Indigo = 6, Violet = 7 };
+
+char *tr_eng(Lumina_Alba);
+
+int main()
+{
+	Lumina_Alba culori;
+
+	printf("%s  %s  %d \n", "Rosu", tr_eng(Rosu), 1);
+	printf("%s  %s  %d \n", "Portocaliu", tr_eng(Portocaliu), 2);
+	printf("%s  %s  %d \n", "Galben", tr_eng(Galben), 3);
+	printf("%s  %s  %d \n", "Verde", tr_eng(Verde), 4);
+	printf("%s  %s  %d \n", "Albastru", tr_eng(Albastru), 5);
+	printf("%s  %s  %d \n", "Indigo", tr_eng(Indigo), 6);
+	printf("%s  %s  %d \n", "Violet", tr_eng(Violet), 7);
+
+	return 0;
+}
+
+char *tr_eng(Lumina_Alba var)
+{
+	switch (var)
+	{
+	case Rosu:
+		return "Red";
+	case Portocaliu: 
+		return "Orange";
+	case Galben: 
+		return "Yellow";
+	case Verde:
+		return "Green";
+	case Albastru: 
+		return "Blue";
+	case Indigo:
+		return "Indigo";
+	case Violet:
+		return "Purple";
+	default:
+		return "";
+	}
+}

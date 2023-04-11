@@ -1,0 +1,986 @@
+/* Lab8_Popa_Larisa-Ancuta_Prob_1
+
+-sa se determine valoarea medie a elementelor pozitive/negative dintr-un tablou unidimensional
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void citire(int, float[]); //citeste elementele tabloului unidimensional
+float val_med_poz(int, float[]); //determina valoarea medie a elementelor pozitive
+float val_med_neg(int, float[]); //determina valoarea medie a elementelor negative
+
+int main()
+{
+	int n;
+	printf("Introduceti numarul de elemente: ");
+	scanf("%d", &n);
+
+	float v[100];
+
+	citire(n, v);
+
+	printf("\nValoarea medie a elementelor pozitive este: %f\n", val_med_poz(n, v));
+	printf("\nValoarea medie a elementelor negative este: %f\n\n", val_med_neg(n, v));
+
+	return 0;
+}
+
+void citire(int n, float v[])
+{
+	printf("\nIntroduceti elementele tabloului:\n ");
+	int i;
+	for (i = 0;i < n;i++)
+		scanf("%f", &v[i]);
+}
+
+float val_med_poz(int n, float v[])
+{
+	int i;
+	float suma = 0, nr = 0;
+
+	for (i = 0;i < n;i++)
+	{
+		if (v[i] > 0)
+		{
+			suma += v[i];
+			nr++;
+		}
+	}
+
+	return suma / nr;
+}
+
+float val_med_neg(int n, float v[])
+{
+	int i;
+	float suma = 0, nr = 0;
+
+	for (i = 0;i < n;i++)
+	{
+		if (v[i] < 0)
+		{
+			suma += v[i];
+			nr++;
+		}
+	}
+
+	return suma / nr;
+}
+
+------------------------------
+
+/* Lab8_Popa_Larisa-Ancuta_Prob_2
+
+-sa se determine cel mai mic element pozitiv dintr-un tablou unidimensional
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void citire(int, float[]); //citeste elementele tabloului
+float min_poz(int, float[]); //cauta si returneaza cel mai mic element pozitiv al tabloului
+
+int main()
+{
+	int n;
+	printf("Introduceti numarul de elemente: ");
+	scanf("%d", &n);
+
+	float v[100];
+	citire(n, v);
+
+	printf("\nCel mai mic element pozitiv este: %0.3f\n\n", min_poz(n, v));
+
+	return 0;
+}
+
+void citire(int n, float v[])
+{
+	int i;
+	printf("\nIntroduceti elementele tabloului: \n");
+	for (i = 0;i < n;i++)
+		scanf("%f", &v[i]);
+}
+
+float min_poz(int n, float v[])
+{
+	int i;
+	float min;
+	for (i = 0;i < n;i++)
+	{
+		if (v[i] > 0)
+		{
+			min = v[i];
+			break;
+		}
+	} //primul element pozitiv gasit devine minim
+
+	for (i = 0;i < n;i++)
+	{
+		if (v[i] < min && v[i]>0) 
+			min = v[i];
+	} //cauta cea mai mica valoare pozitiva 
+
+	return min;
+}
+
+------------------------------
+
+/* Lab8_Popa_Larisa-Ancuta_Prob_3
+
+-se citeste de la tastatura un sir de 10 valori intregi
+-se defineste o functie care primeste sirul ca parametru si apoi îl afiseaza ordonat crescator
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void citire(int[]); //citeste un sir de 10 valori intregi
+void ordonare(int[]); //ordoneaza crescator elementele sirului
+
+int main()
+{
+	int v[100];
+
+	citire(v);
+
+	ordonare(v);
+
+	return 0;
+}
+
+void citire(int v[])
+{
+	int i;
+	printf("Introduceti elementele tabloului(numere intregi): \n");
+	for (i = 0;i < 10;i++)
+		scanf("%d", &v[i]);
+}
+
+void ordonare(int v[])
+{
+	int i, j, aux;
+	for (i = 0;i < 10;i++)
+	{
+		for (j = 0;j < 10;j++)
+		{
+			if (v[i] < v[j])
+			{
+				aux = v[i];
+				v[i] = v[j];
+				v[j] = aux;
+			}
+		}
+	}
+
+	printf("\nElementele ordonate crscator:\n ");
+	for (i = 0;i < 10;i++)
+		printf("%d  ", v[i]);
+	printf("\n\n");
+}
+
+------------------------------
+
+/* Lab8_Popa_Larisa-Ancuta_Prob_4
+
+-defineste o parola (in format sir de caractere)
+-citeste în mod repetat sirurile de caractere introduse de la tastatura, pâna când utilizatorul scrie parola corecta
+-sa se afiseze numarul de incercari pâna la introducerea parolei corecte
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+
+bool verif_parola(char[], char[]); //verifica daca parolele sunt la fel
+
+int main()
+{
+	char parola[] = "caractere", x[100];
+	int nr = 0;
+
+	do
+	{
+		printf("Introduceti parola: ");
+		scanf("%s", x);
+
+		nr++;
+
+	} while (!verif_parola(parola, x));
+
+	printf("\nNumarul de incercari : %d\n\n", nr);
+	return 0;
+}
+
+bool verif_parola(char parola[],char x[])
+{
+	int i;
+	if (strlen(parola) != strlen(x)) //verifica dimensiunile
+		return false;
+	else
+	{
+		for (i = 0;i < strlen(parola);i++)
+		{
+			if (parola[i] != x[i])
+				return false;
+		}
+	}
+	return true;
+}
+
+------------------------------
+
+/* Lab8_Popa_Larisa-Ancuta_Prob_5
+
+-citeste de la tastatura doua siruri de caractere reprezentand numele si prenumele unei persoane
+-afisati-le cu majuscula, separate prin doua spatii de tabulare
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define DIM 20
+
+void majuscula(char[DIM]); //modifica prima litera in litera mare
+
+int main()
+{
+	char n[DIM], p[DIM];
+	printf("Nume: ");
+	scanf("%s", n);
+	printf("Prenume: ");
+	scanf("%s", p);
+
+	majuscula(n);
+	majuscula(p);
+
+	printf("\nNume si prenume(majuscule): %s  %s \n\n", n, p);
+}
+
+void majuscula(char x[DIM])
+{
+	if (x[0] >= 'a' && x[0] <= 'z')
+		x[0] -= 32;
+}
+
+------------------------------
+
+/* Lab8_Popa_Larisa-Ancuta_Prob_6
+
+-defineste doua matrici de valori intregi
+-dimensiunea si elementele matricilor sunt citite de la tastatura
+-scrieti functiile care:
+       a) afiseaza pozitiile elementelor pare din fiecare matrice;
+       b) afiseaza suma elementelor impare din ambele matrice;
+       c) afiseaza suma matricelor;
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void cit_matrice(int, int, int x[][100]); //citeste elementele unei matrice
+void poz_pare(int, int, int x[][100]); //afiseaza pozitiile elementelor pare
+int sum_impare(int, int, int x[][100]); //returneaza suma elementelor impare din matrice
+void sum_matrice(int, int, int x[][100], int y[][100]); //calculeaza si afiseaza suma celor doua matrice
+
+int main()
+{
+	int n, m, a[100][100], b[100][100];
+	printf("Introduceti dimensiunea tabloului\n");
+	printf("Linii: ");
+	scanf("%d", &n);
+	printf("Coloane: ");
+	scanf("%d", &m);
+
+	printf("\nMatrice 1\n");
+	cit_matrice(n, m, a);
+	printf("\nMatrice 2\n");
+	cit_matrice(n, m, b);
+
+	printf("\nPozitii elemente pare matrice 1\n");
+	poz_pare(n, m, a);
+	printf("\nPozitii elemente pare matrice 2\n");
+	poz_pare(n, m, b);
+
+	printf("\nSuma elementelor impare din matricea 1 este: %d \n", sum_impare(n, m, a));
+	printf("\nSuma elementelor impare din matricea 2 este: %d \n", sum_impare(n, m, b));
+
+	printf("\nSuma celor doua matrici este: \n");
+	sum_matrice(n, m, a, b);
+
+	return 0;
+}
+
+void cit_matrice(int n, int m, int x[][100])
+{
+	int i, j;
+	for(i=0;i<n;i++)
+	{
+		for (j = 0;j < m;j++)
+		{
+			printf("m[%d][%d]=", i, j);
+			scanf("%d", &x[i][j]);
+		}
+	}
+}
+
+void poz_pare(int n, int m, int x[][100])
+{
+	int i, j;
+	for (i = 0;i < n;i++)
+	{
+		for (j = 0;j < m;j++)
+		{
+			if (x[i][j] % 2 == 0)
+				printf("Linia %d / Coloana %d \n", i, j);
+		}
+	}
+}
+
+int sum_impare(int n, int m, int x[][100])
+{
+	int i, j, sum = 0;
+	for (i = 0;i < n;i++)
+	{
+		for (j = 0;j < m;j++)
+		{
+			if (x[i][j] % 2 != 0)
+				sum += x[i][j];
+		}
+	}
+	return sum;
+}
+
+void sum_matrice(int n, int m, int x[][100], int y[][100])
+{
+	int sum[100][100] = { 0 }, i, j;
+	for (i = 0;i < n;i++)
+	{
+		for (j = 0;j < m;j++)
+		{
+			sum[i][j] = x[i][j] + y[i][j];
+		}
+	}
+
+	for (i = 0;i < n;i++)
+	{
+		for (j = 0;j < m;j++)
+			printf("%6.0d  ", sum[i][j]);
+		printf("\n");
+	}
+}
+
+------------------------------
+
+/* Lab8_Popa_Larisa-Ancuta_Prob_7
+
+-cititi de la tastatura elementele unei matrice cu elemente de tip float, cu dimensiunea 3x3
+-rearanjati coloanele matricei astfel ca suma elementelor de pe o anumita coloana sa fie mai mica decat suma elementelor de pe coloana urmatoare
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define DIM 3
+
+void citire(float[][DIM]); //citeste matricea
+void rearanjare(float[][DIM]); //rearanjare coloane matrice
+
+int main()
+{
+	float a[DIM][DIM];
+	int i, j;
+
+	citire(a);
+
+	rearanjare(a);
+
+	printf("\nAfisare matrice noua: \n");
+	for (i = 0;i < 3;i++)
+	{
+		for (j = 0;j < 3;j++)
+			printf("%6.2f  ", a[i][j]);
+		printf("\n");
+	}
+
+}
+
+void citire(float a[DIM][DIM])
+{
+	int i, j;
+	printf("Introduceti elementele matricei(3x3): \n");
+	for (i = 0;i < 3;i++)
+	{
+		for (j = 0;j < 3;j++)
+		{
+			printf("a[%d][%d]=", i, j);
+			scanf("%f", &a[i][j]);
+		}
+	}
+}
+
+void rearanjare(float a[DIM][DIM])
+{
+	int i, j, s1, s2;
+	float aux;
+	for (j = 0;j < 2;j++)
+	{
+		s1 = a[0][j] + a[1][j] + a[2][j];
+		s2 = a[0][j+1] + a[1][j+1] + a[2][j+1];
+
+		if (s1 > s2)
+		{
+			for (i = 0;i < 3;i++)
+			{
+				aux = a[i][j];
+				a[i][j] = a[i][j + 1];
+				a[i][j + 1] = aux;
+				//interschimbare coloane
+			}
+		}
+	}
+}
+
+------------------------------
+
+/* Lab8_Popa_Larisa-Ancuta_Prob_8
+
+-preia de la tastatura “n” valori reale într-un tablou unidimensional
+-calculeaza cu o functie valoarea medie a valorilor introduse
+-afiseaza cu o alta functie doar valorile din tablou mai mari decît valoarea medie calculata
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+float medie(int, float[]);
+void afisare(int, float[],float);
+
+#define DIM 100
+
+int main()
+{
+	int n, i;
+	float v[DIM];
+
+	printf("Introduceti numarul de elemente: ");
+	scanf("%d", &n);
+
+	printf("\nIntroduceti elementele tabloului: \n");
+	for (i = 0;i < n;i++)
+		scanf("%f", &v[i]);
+
+	float m = medie(n, v);
+
+	afisare(n, v, m);
+
+	return 0;
+}
+
+float medie(int n, float v[DIM])
+{
+	int i;
+	float suma = 0;
+
+	for (i = 0;i < n;i++)
+		suma += v[i];
+
+	return suma / n;
+}
+
+void afisare(int n, float v[DIM], float medie)
+{
+	int i;
+
+	printf("\nValorile mai mari decat media lor (%0.2f) sunt: \n",medie);
+	for (i = 0;i < n;i++)
+	{
+		if (v[i] > medie)
+			printf("%6.2f  ", v[i]);
+	}
+	printf("\n\n");
+}
+
+------------------------------
+
+/* Lab8_Popa_Larisa-Ancuta_Prob_9
+
+-se citesc într-un tablou unidimensional “n” valori întregi 
+-se determina numarul elementelor negative impare
+-sa se afiseze acest numar si elementele respective
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void citire(int, int[]); //citeste elementele tabloului unidimensional
+void neg_imp(int, int[]); //determina si afiseaza numarul si elementele impare negative
+
+int main()
+{
+	int n, a[100];
+	printf("Introduceti numarul de elemente: ");
+	scanf("%d", &n);
+
+	printf("Introduceti elementele tabloului: \n");
+	citire(n, a);
+
+	neg_imp(n, a);
+
+	return 0;
+}
+
+void citire(int n, int a[])
+{
+	int i;
+	for (i = 0;i < n;i++)
+		scanf("%d", &a[i]);
+}
+
+void neg_imp(int n, int a[])
+{
+	int i, nr = 0;
+	printf("\nNumerele impare negative din tablou sunt: \n");
+	for (i = 0;i < n;i++)
+	{
+		if (a[i] % 2 != 1 && a[i] < 0)
+		{
+			printf("%d  ", a[i]);
+			nr++;
+		}
+	}
+
+	if (nr == 0)
+		printf("NU EXISTA!\n\n");
+	else
+		printf("\nSunt %d numere impare negative.\n\n", nr);
+}
+
+------------------------------
+
+/* Lab8_Popa_Larisa-Ancuta_Prob_10
+
+-citeste elementele întregi ale unui tablou unidimensional
+-construieste într-o functie un alt tablou unidimensional în care se vor stoca
+      resturile împartirii elementelor primului tablou la numarul elementelor pozitive din acesta
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void citire(int, int[]); //citeste elementele tabloului unidimensional
+int nr_poz(int, int[]); //returneaza numarul de elemente pozitive
+void constr_tablou(int, int[], int[]); //construieste un nou tablou
+
+int main()
+{
+	int n, a[100], b[100] = { 0 }, i;
+	printf("Introduceti numarul de elemente: ");
+	scanf("%d", &n);
+
+	printf("Introduceti elementele tabloului: \n");
+	citire(n, a);
+
+	constr_tablou(n, a, b);
+	printf("\nTabloul de resturi(element/nr. de elemente): \n");
+	for (i = 0;i < n;i++)
+		printf("%d  ", b[i]);
+	printf("\n\n");
+
+	return 0;
+}
+
+void citire(int n, int a[])
+{
+	int i;
+	for (i = 0;i < n;i++)
+		scanf("%d", &a[i]);
+}
+
+int nr_poz(int n, int a[])
+{
+	int i, nr = 0;
+	for (i = 0;i < n;i++)
+	{
+		if (a[i] > 0)
+			nr++;
+	}
+	return nr;
+}
+
+void constr_tablou(int n, int a[], int b[])
+{
+	int i, nr = nr_poz(n, a);
+	for (i = 0;i < n;i++)
+		b[i] = a[i] % nr;
+}
+
+------------------------------
+
+/* Lab8_Popa_Larisa-Ancuta_Prob_11
+
+-se citeste de la tastatura un sir de caractere
+-scrieti functia care inverseaza sirul si apoi formeaza un alt sir de caractere ce va contine elementele de pe pozitiile pare ale sirului inversat
+-Afisati sirurile obtinute
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+
+#define DIM 100
+
+void invers(char[]);
+void sir_nou(char[]);
+
+int main()
+{
+	char c[DIM];
+	printf("Introduceti un sir de caractere: ");
+	scanf("%s", &c);
+
+	printf("\nSirul inversat este: ");
+	invers(c);
+	printf("%s \n", c);
+
+	printf("\nSir pozitii pare(dupa inversare): ");
+	sir_nou(c);
+	printf("\n\n");
+
+	return 0;
+}
+
+void invers(char c[DIM])
+{
+	char  aux;
+	int i, n = strlen(c);
+
+	for (i = 0;i < n/2;i++)
+	{
+		aux = c[i];
+		c[i] = c[n-i-1];
+		c[n-i-1] = aux;
+	}
+}
+
+void sir_nou(char c[DIM])
+{
+	int i, nr = 0;
+	char nou[DIM];
+
+	for (i = 0;i < strlen(c) - 1;i++)
+	{
+		if (i % 2 == 0)
+		{
+			nou[nr] = c[i];
+			nr++;
+		}
+	}
+	nou[nr] = '\0';
+	printf("%s", nou);
+}
+
+
+------------------------------
+
+/* Lab8_Popa_Larisa-Ancuta_Prob_12
+
+-Sa se citeasca de la tastatura elementele întregi ale unei matrice de dimensiune m x n
+-Daca matricea este patratica sa se afiseze elementele diagonalei secundare
+-altfel sa se afiseze suma elementelor de pe o coloana data, c
+-Valorile m, n si c se citesc de la tastatura si se vor scrie functii pentru operatiile cerute
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void cit_matrice(int, int, int x[][100]); //citeste elementele unei matrice
+void diag_sec(int, int x[][100]); //afiseaza elementele de pe diagonala secundara
+void suma_col(int, int, int x[][100], int); //afiseaza suma elementelor de pe o coloana data
+
+int main()
+{
+	int n, m, a[100][100], c;
+	printf("Introduceti dimensiunea tabloului\n");
+	printf("Linii: ");
+	scanf("%d", &n);
+	printf("Coloane: ");
+	scanf("%d", &m);
+
+	printf("\nIntroduceti elementele tabloului bidimensional\n");
+	cit_matrice(n, m, a);
+
+	if (n == m)
+		diag_sec(n, a);
+	else
+	{
+		printf("\nIntroduceti numarul unei coloane:");
+		scanf("%d", &c);
+		suma_col(n, m, a, c);
+	}
+
+	return 0;
+}
+
+void cit_matrice(int n, int m, int a[][100])
+{
+	int i, j;
+	for (i = 0;i<n;i++)
+	{
+		for (j = 0;j < m;j++)
+		{
+			printf("a[%d][%d]=", i, j);
+			scanf("%d", &a[i][j]);
+		}
+	}
+}
+
+void diag_sec(int n, int a[][100])
+{
+	int i, j;
+	printf("\nElementele de pe diagonala secundara sunt: \n");
+	for (i = 0;i < n;i++)
+	{
+		printf("%d  ", a[i][n - i - 1]);
+	}
+	printf("\n\n");
+}
+
+void suma_col(int n, int m, int a[][100], int c)
+{
+	int i, s = 0;
+	for (i = 0;i < n;i++)
+		s += a[i][c];
+	printf("\nSuma elementelor de pe coloana %d este egala cu : %d\n\n", c, s);
+}
+
+------------------------------
+
+/* Lab8_Popa_Larisa-Ancuta_Prob_13
+
+Pornind de la exemplul 5 în care se arata modul de parcurgere a unei matrice tridimensionale din perspectiva xOy
+sa se scrie un program care face parcurgerea matricei considerând perspectiva xOz ?i yOz
+Afi?a?i datele precizând din ce perspectiva au fost parcurse
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define Max1 3 //max planuri
+#define Max2 2 //max linii
+#define Max3 4 //max coloane
+
+void afisare(int, int, int, int[Max1][Max2][Max3]);
+
+int main()
+{
+	int a[Max1][Max2][Max3] = {{ { -1, 22, 3, 43 },{ 23, 47, -9, 2 } },
+	{ { 9, 36, 45, 4 },{ 12, 24, 22, -1 } },{ { 82, 312, 342, 1 },{ 21, 32, 43, -2 } }};
+
+	printf("\nxoy\n");
+	afisare(Max1, Max2, Max3, a);
+
+	printf("\nxoz\n");
+	afisare(Max1, Max3, Max2, a);
+
+	printf("\nyoz\n");
+	afisare(Max2, Max3, Max1, a);
+
+	return 0;
+}
+
+void afisare(int b, int c, int d, int a[Max1][Max2][Max3])
+{
+	int i, j, k;
+
+	for (i = 0; i < b; i++)
+	{
+		for (j = 0; j < c; j++)
+		{
+			for (k = 0; k < d; k++)
+			{
+				printf("%2.0d\t", a[i][j][k]);
+			}
+			printf("\n");
+		}
+		printf("\n");
+	}
+}
+
+------------------------------
+
+/* Lab8_Popa_Larisa-Ancuta_Prob_14
+
+-afisa?i fiecare apari?ie a fiecarui caracter din alfabetul englez dintr-un ?ir de testare (fara spatii) folosit în vechea telegrafie (cod morse)
+-pe o linie va fi un triplet al caracterului cautat,offsetul din interiorul ?irului unde a fost gasit, (pozitia relativa fata de inceput) si caracterul morse potrivit
+-afisa?i ?irul de test initial cu prima apari?ie a fiecarui caracter convertit catre caracterele majuscule (caracterele ne-alfabetice vor fi ignorate)
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <string.h>
+using namespace std;
+
+void cod_morse(char);
+void afisare_caracter(int, char[], char);
+void afisare_sir(int, char[]);
+
+int main()
+{
+	char sir[100], c;
+	cout << "Introduceti un text fara spatii: ";
+	cin >> sir;
+
+	int n = strlen(sir), i;
+
+	cout << "\nTextul in Cod Morse: ";
+	for (i = 0;i < n ;i++)
+		cod_morse(sir[i]);
+	cout << "\n";
+
+	cout << "\nIntroduceti caracterul pe care doriti sa il cautati: ";
+	cin >> c;
+	afisare_caracter(n, sir, c);
+}
+
+void cod_morse(char c)
+{
+		switch (c)
+		{
+		case 'A':
+		case 'a':
+			cout << ".-";
+			break;
+		case 'B':
+		case 'b':
+			cout << "-...";
+			break;
+		case 'C':
+		case 'c':
+			cout << "-.-.";
+			break;
+		case 'D':
+		case 'd':
+			cout << "-..";
+			break;
+		case 'E':
+		case 'e':
+			cout << ".";
+			break;
+		case 'F':
+		case 'f':
+			cout << "..-.";
+			break;
+		case 'G':
+		case 'g':
+			cout << "--.";
+			break;
+		case 'H':
+		case 'h':
+			cout << "....";
+			break;
+		case 'I':
+		case 'i':
+			cout << "..";
+			break;
+		case 'J':
+		case 'j':
+			cout << ".---";
+			break;
+		case 'K':
+		case 'k':
+			cout << "-.-";
+			break;
+		case 'L':
+		case 'l':
+			cout << ".-..";
+			break;
+		case 'M':
+		case 'm':
+			cout << "--";
+			break;
+		case 'N':
+		case 'n':
+			cout << "-.";
+			break;
+		case 'O':
+		case 'o':
+			cout << "---";
+			break;
+		case 'P':
+		case 'p':
+			cout << ".--.";
+			break;
+		case 'Q':
+		case 'q':
+			cout << "--.-";
+			break;
+		case 'R':
+		case 'r':
+			cout << ".-.";
+			break;
+		case 'S':
+		case 's':
+			cout << "...";
+			break;
+		case 'T':
+		case 't':
+			cout << "-";
+			break;
+		case 'U':
+		case 'u':
+			cout << "..-";
+			break;
+		case 'V':
+		case 'v':
+			cout << "...-";
+			break;
+		case 'W':
+		case 'w':
+			cout << ".--";
+			break;
+		case 'X':
+		case 'x':
+			cout << "-..-";
+			break;
+		case 'Y':
+		case 'y':
+			cout << "-.--";
+			break;
+		case 'Z':
+		case 'z':
+			cout << "--..";
+			break;
+		default:
+			cout << "eroare";
+		}
+}
+
+void afisare_caracter(int n, char sir[], char c)
+{
+	int i;
+	for (i = 0;i < n;i++)
+	{
+		if (c == sir[i])
+		{
+			cout <<"Caracterul: "<<c<< " Pozitia: " << i << " Morse: ";
+			cod_morse(sir[i]);
+			cout << endl;
+		}
+	}
+}

@@ -1,0 +1,821 @@
+/* Lab7_Popa_Larisa-Ancuta_Prob_1
+
+-se citesc trei numere de la tastatura (a, b si c)
+-sa se determine aria dreptunghiului ale carui laturi sunt a si b 
+-verificati daca diagonala dreptunghiului este egala cu c
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <math.h>
+
+float cit_nr(void); //citeste numar
+void aria_dr(float, float); //calculeaza si afiseaza aria dreptunghiului
+bool diagonala(float, float, float); //verifica daca diagonala dr. este egala cu c
+
+int main()
+{
+	float a, b, c;
+	printf("Introduceti valorile laturilor a si b \n");
+	a = cit_nr();
+	b = cit_nr();
+	printf("\nIntroduceti valoarea lui c \n");
+	c = cit_nr();
+
+	aria_dr(a, b);
+
+	if (diagonala(a, b, c))
+		printf("\nDiagonala dreptunghiului este egala cu c \n\n", c);
+	else
+		printf("\nDiagonala dreptunghiului NU este egala cu c \n\n", c);
+
+	return 0;
+}
+
+float cit_nr(void)
+{
+	float x;
+	printf("Introduceti un numar: ");
+	scanf("%f", &x);
+	return x;
+}
+
+void aria_dr(float a, float b)
+{
+	float aria = a*b;
+	printf("\nAria dreptunghiului este egala cu %f \n", aria);
+}
+
+bool diagonala(float a, float b, float c)
+{
+	float diag = sqrt(a*a + b*b); //teorema lui Pitagora
+	if (diag == c)
+		return true;
+	return false;
+}
+
+------------------------------
+
+/* Lab7_Popa_Larisa-Ancuta_Prob_2
+
+-verifica daca un numar citit de la tastatura este patrat perfect
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <math.h>
+
+float cit_nr(void); //citeste numar
+bool verif_pp(float); //verificare patrat perfect
+
+int main()
+{
+	float x;
+	x = cit_nr();
+
+	if (verif_pp(x))
+		printf("\nNumarul introdus este patrat perfect. \n\n");
+	else
+		printf("\nNumarul introdus NU este patrat perfect. \n\n");
+
+
+	return 0;
+}
+
+float cit_nr(void)
+{
+	float x;
+	printf("Introduceti un numar: ");
+	scanf("%f", &x);
+	return x;
+}
+
+bool verif_pp(float x)
+{
+	if (sqrt(x) == (int)sqrt(x))
+		return true;
+	return false;
+}
+
+------------------------------
+
+/* Lab7_Popa_Larisa-Ancuta_Prob_3
+
+-calculeaza a^n (prin inmultiri repetate)
+     n este citit de la consola 
+	 a se defineste în program
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int cit_nr(void); //citeste un numar intreg
+int putere(int, int); //ridicare la putere prin inmultiri repetate
+
+int main()
+{
+	int n, an, a = 2;
+	printf("Introduceti valoarea lui n \n");
+	n = cit_nr();
+
+	an = putere(a, n);
+	printf("\nValoarea lui %d^n este: %d\n\n",a, an);
+
+	return 0;
+}
+
+int cit_nr(void)
+{
+	int x;
+	printf("Introduceti un numar: ");
+	scanf("%d", &x);
+	return x;
+}
+
+int putere(int a, int n)
+{
+	int i;
+	float an = 1;;
+	for (i = 0;i < n;i++)
+	{
+		an *= a;
+	}
+	return an;
+}
+
+------------------------------
+
+/* Lab7_Popa_Larisa-Ancuta_Prob_4
+
+-citeste de la tastatura o valoare întreaga si calculeaza n! (n-factorial)
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int cit_nr(void); //citeste un numar intreg
+void factorial(int); //calculeaza n!
+
+int main()
+{
+	int n;
+	n = cit_nr();
+
+	factorial(n);
+
+	return 0;
+}
+
+int cit_nr(void)
+{
+	int x;
+	printf("Introduceti un numar: n = ");
+	scanf("%d", &x);
+	return x;
+}
+
+void factorial(int n)
+{
+	int p = 1, i;
+	for (i = 1;i <= n;i++)
+		p *= i;
+
+	printf("\nRezultatul lui n! este: %d \n\n", p);
+}
+
+------------------------------
+
+/* Lab7_Popa_Larisa-Ancuta_Prob_5
+
+- determina cel mai mare numar prim mai mic decât numarul dat
+- determina toate numerele prime mai mici decât numarul dat
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+float cit_nr(void); //citeste un numar
+bool verif_prim(int); //verificare de numar prim
+void mare_prim(int); //determina cel mai mare numar prim mai mic decât numarul dat
+void mic_prim(int); //determina toate numerele prime mai mici decât numarul dat
+
+int main()
+{
+	float x;
+	x = cit_nr();
+
+	mare_prim(x);
+	mic_prim(x);
+
+	return 0;
+}
+
+float cit_nr(void)
+{
+	float x;
+	printf("Introduceti un numar: ");
+	scanf("%f", &x);
+	return x;
+}
+
+bool verif_prim(int x)
+{
+	int d;
+
+	if (x == 0 || x == 1)
+		return false;
+
+	for (d = 2;d <= x / 2;d++)
+	{
+		if (x%d == 0)
+			return false;
+	}
+	return true;
+}
+
+void mare_prim(int x)
+{
+	int d = x;
+	while (d >= 2)
+	{
+		d--;
+		if (verif_prim(d))
+		{
+			printf("\nCel mai mare numar prim mai mic decat numarul citit este: %d \n", d);
+			break;
+		}
+	}
+}
+
+void mic_prim(int x)
+{
+	printf("\nNumerele prime mai mici decat numarul citit: \n");
+	int i, prim;
+	for (i = 2;i < x;i++)
+	{
+		if (verif_prim(i))
+			printf("%d \n", i);
+	}
+}
+
+------------------------------
+
+/* Lab7_Popa_Larisa-Ancuta_Prob_6
+
+-determina cel mai mare divizor comun a doi întregi
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int cit_nr(void); //citeste un numar intreg
+void cmmdc(int, int); // determina si afiseaza cel mai mare divizor comun
+
+int main()
+{
+	int a, b;
+	a = cit_nr();
+	b = cit_nr();
+
+	cmmdc(a, b);
+
+	return 0;
+}
+
+int cit_nr(void)
+{
+	int x;
+	printf("Introduceti un numar: ");
+	scanf("%d", &x);
+	return x;
+}
+
+void cmmdc(int a, int b)
+{
+	while (a != b)
+	{
+		if (a > b)
+			a -= b;
+		if (b > a)
+			b -= a;
+	}
+
+	printf("\nCel mai mare divizor comun al celor doua numere este: %d \n\n", a);
+}
+
+------------------------------
+
+/* Lab7_Popa_Larisa-Ancuta_Prob_7
+
+-determina toti divizorii unui numar
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int cit_nr(void); //citeste un numar
+void det_div(int); //determina si afiseaza divizorii numarului
+
+int main()
+{
+	int x;
+	x = cit_nr();
+
+	det_div(x);
+
+	return 0;
+}
+
+int cit_nr(void)
+{
+	int x;
+	printf("Introduceti un numar: ");
+	scanf("%d", &x);
+	return x;
+}
+
+void det_div(int x)
+{
+	int d;
+	for (d = 1;d <= x;d++)
+	{
+		if (x%d == 0)
+		{
+			if (d == 1 || d == x)
+				printf("%d divizor propriu\n", d);
+			else
+				printf("%d divizor comun\n", d);
+		}
+	}
+}
+
+------------------------------
+
+/* Lab7_Popa_Larisa-Ancuta_Prob_8
+
+-calculati produsul a doua numere întregi folosind numarul corespunzator de adunari
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int cit_nr(void); //citeste un numar intreg
+void produs(int, int); //produsul numerelor prin adunari repetate
+
+int main()
+{
+	int a, b;
+	a = cit_nr();
+	b = cit_nr();
+
+	produs(a, b);
+
+	return 0;
+}
+
+int cit_nr(void)
+{
+	int x;
+	printf("Introduceti un numar intreg: ");
+	scanf("%d", &x);
+	return x;
+}
+
+void produs(int a, int b)
+{
+	int produs = 0;
+	while (b != 0)
+	{
+		produs += a;
+		b--;
+	}
+	printf("\nProdusul celor doua numere este: %d \n\n", produs);
+}
+
+------------------------------
+
+/* Lab7_Popa_Larisa-Ancuta_Prob_9
+
+-determina câtul împartirii a doi întregi folosind scaderi succesive
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int cit_nr(void); //citeste un numar intreg
+void impartire(int, int); //impartirea a doi intregi prin scaderi repetate
+
+int main()
+{
+	int a, b;
+	a = cit_nr();
+	b = cit_nr();
+
+	impartire(a, b);
+
+	return 0;
+}
+
+int cit_nr(void)
+{
+	int x;
+	printf("Introduceti un numar intreg: ");
+	scanf("%d", &x);
+	return x;
+}
+
+void impartire(int a, int b)
+{
+	int cat = 0, rest = 0;
+	while (a >= b)
+	{
+		a -= b;
+		cat++;
+	}
+	rest = a;
+
+	if(rest==0)
+		printf("\nRezultatul impartirii celor doua numere este %d \n\n", cat);
+	else
+		printf("\nRezultatul impartirii celor doua numere este %d rest %d \n\n", cat, rest);
+}
+
+------------------------------
+
+/* Lab7_Popa_Larisa-Ancuta_Prob_10
+
+-determina numarul de cifre care compun un numar întreg citit de la tastatura
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int cit_nr(void); //citeste un numar intreg
+void nr_cifre(int); //determina numarul de cifre al unui numar
+
+int main()
+{
+	int n;
+	n = cit_nr();
+
+	nr_cifre(n);
+
+	return 0;
+}
+
+int cit_nr(void)
+{
+	int x;
+	printf("Introduceti un numar intreg: ");
+	scanf("%d", &x);
+	return x;
+}
+
+void nr_cifre(int n)
+{
+	int nr = 0;
+
+	if (n <= 9)
+	{
+		printf("\nNumarul este compus dintr-o cifra.\n\n");
+	}
+	else
+	{
+		while (n != 0)
+		{
+			n /= 10;
+			nr++;
+		}
+		printf("\nNumarul este compus din %d cifre.\n\n", nr);
+	}
+}
+
+------------------------------
+
+/* Lab7_Popa_Larisa-Ancuta_Prob_11
+
+-citeste de la tastatura n numere întregi
+-afisati toate numerele impare din sir
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int cit_nr(void); //citeste un numar intreg
+void impare(int, int[]); //afiseaza numerele impare din sir
+
+int main()
+{
+	int n, i, s[100];
+	printf("Introduceti numarul de elemente\n");
+	n = cit_nr();
+
+	printf("\nIntroduceti %d numere\n", n);
+	for (i = 0;i < n;i++)
+		s[i] = cit_nr();
+
+	impare(n, s);
+
+	return 0;
+}
+
+int cit_nr(void)
+{
+	int x;
+	printf("Introduceti un numar intreg: ");
+	scanf("%d", &x);
+	return x;
+}
+
+void impare(int n, int s[])
+{
+	int i,nr=0;
+	printf("\nNumerele impare din sir sunt: \n");
+	for (i = 0;i < n;i++)
+	{
+		if (s[i] % 2 != 0)
+		{
+			printf("%d \n", s[i]);
+			nr++;
+		}
+	}
+	if (nr == 0)
+		printf("NU EXISTA\n\n");
+}
+
+------------------------------
+
+/* Lab7_Popa_Larisa-Ancuta_Prob_12
+
+-sa se citeasca un numar întreg n de la tastatura
+-se citesc apoi numere reale, pâna când suma lor depaseste valoarea lui n
+-sa se afiseze: suma numerelor citite(precizie de 2 zecimale) si numarul lor (câte s-au introdus)
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int cit_int(void); //citeste un numar intreg
+void nr_reale(int); //citeste n numere si afiseaza suma lor
+
+int main()
+{
+	int n = cit_int();
+
+	nr_reale(n);
+
+	return 0;
+}
+
+int cit_int(void)
+{
+	int x;
+	printf("Introduceti un numar intreg: ");
+	scanf("%d", &x);
+	return x;
+}
+
+void nr_reale(int n)
+{
+	int nr = 0;
+	float x, suma = 0;
+
+	printf("\n");
+	do
+	{
+		printf("Introduceti un numar real: ");
+		scanf("%f", &x);
+		suma += x;
+		nr++;
+	} while (suma <= n);
+
+	printf("\nSuma este: %0.2f \n", suma);
+	printf("\nS-au introdus %d numere. \n\n", nr);
+
+}
+
+------------------------------
+
+/* Lab7_Popa_Larisa-Ancuta_Prob_13
+
+-determina cmmmc a doua numere citite de la tastatura
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int cit_nr(void); //citeste un numar intreg
+int cmmdc(int, int); //determina cel mai mare divizor comun al celor doua numere
+void cmmmc(int, int); //determina cel mai mic multiplu comun al celor doua numere
+
+int main()
+{
+	int a, b;
+	a = cit_nr();
+	b = cit_nr();
+
+	cmmmc(a, b);
+
+	return 0;
+}
+
+int cit_nr(void)
+{
+	int x;
+	printf("Introduceti un numar intreg: ");
+	scanf("%d", &x);
+	return x;
+}
+
+int cmmdc(int a, int b)
+{
+	while (a != b)
+	{
+		if (a > b)
+			a -= b;
+		else
+			b -= a;
+	}
+	return a;
+}
+
+void cmmmc(int a, int b)
+{
+	int m = (a*b) / cmmdc(a, b);
+	printf("\nCMMMC al celor doua numere este: %d \n\n", m);
+}
+
+------------------------------
+
+/* Lab7_Popa_Larisa-Ancuta_Prob_14
+
+-citeste n numere întregi de la tastatura
+-afiseaza numerele divizibile cu 3
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int cit_nr(void); //citeste un numar intreg
+void div_3(int, int[]); //afiseaza numerele divizibile cu 3
+
+int main()
+{
+	int n, i, s[100];
+	printf("Introduceti numarul de elemente\n");
+	n = cit_nr();
+
+	printf("\nIntroduceti %d numere\n", n);
+	for (i = 0;i < n;i++)
+		s[i] = cit_nr();
+
+	div_3(n, s);
+
+	return 0;
+}
+
+int cit_nr(void)
+{
+	int x;
+	printf("Introduceti un numar intreg: ");
+	scanf("%d", &x);
+	return x;
+}
+
+void div_3(int n, int s[])
+{
+	int i, nr = 0;
+	printf("\nNumerele divizibile cu 3 din sir sunt: \n");
+	for (i = 0;i < n;i++)
+	{
+		if (s[i] % 3 == 0)
+		{
+			printf("%d \n", s[i]);
+			nr++;
+		}
+	}
+	if (nr == 0)
+		printf("NU EXISTA\n\n");
+}
+
+------------------------------
+
+/* Lab7_Popa_Larisa-Ancuta_Prob_15
+
+-citeste de la tastatura un caracter
+-afiseaza caracterul pe n rânduri, câte n caractere pe un rând
+-n citit de la tastatura
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int cit_nr(void); //citeste un numar intreg
+void afisare(int, char); //afiseaza caracterul pe n randuri, cate n caractere pe un rand
+
+int main()
+{
+	char c;
+	printf("Introduceti un caracter: ");
+	scanf("%c", &c);
+
+	int n = cit_nr();
+
+	afisare(n, c);
+
+	return 0;
+}
+
+int cit_nr(void)
+{
+	int x;
+	printf("Introduceti un numar: ");
+	scanf("%d", &x);
+	return x;
+}
+
+void afisare(int n, char c)
+{
+	int i, j;
+	for (i = 0;i < n;i++)
+	{
+		for (j = 0;j < n;j++)
+			printf("%c  ", c);
+		printf("\n");
+	}
+}
+
+------------------------------
+
+/* Lab7_Popa_Larisa-Ancuta_Prob_16
+
+-se introduc de la tastatura numere întregi, pâna ce utilizatorul apasa tasta <Esc>
+-sa se determine si sa se afiseze media numerelor impare pozitive
+
+Program C */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <conio.h>
+
+#define esc 27
+
+int cit_nr(void); //citeste un numar intreg
+bool imp_poz(int); //verifica daca numarul este impar pozitiv
+
+int main()
+{
+	int x, nr = 0, suma = 0;
+	char key;
+
+	do
+	{
+		x = cit_nr();
+
+		if (imp_poz(x))
+		{
+			suma += x;
+			nr++;
+		}
+
+		printf("Continuati? (enter/esc) \n\n");
+		key = _getch(); //tasta apasata dupa introducerea numarului
+
+	} while (key != 27); //27 codul ascii pentru tasta esc
+
+
+	float media = (float)suma / nr;
+	printf("\nMedia numerelor impare pozitive introduse este: %f \n\n", media);
+
+	return 0;
+}
+
+int cit_nr(void)
+{
+	int x;
+	printf("Introduceti un numar intreg: ");
+	scanf("%d", &x);
+	return x;
+}
+
+bool imp_poz(int x)
+{
+	if (x % 2 != 0 && x > 0)
+		return true;
+	return false;
+}
